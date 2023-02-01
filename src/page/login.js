@@ -13,9 +13,10 @@ import {
 }
     from 'mdb-react-ui-kit';
 
-import { useNavigate } from "react-router-dom";
-import Axios from "axios";
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+    import { useNavigate } from "react-router-dom";
+    import Axios from "axios";
+    import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
+    import  "./style/login.scss"
 
 
 const Login = props => {
@@ -26,12 +27,15 @@ const Login = props => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setError] = React.useState('');
+    
+    const [ready, setReady] = React.useState(true);
 
     const changeShowPassword = () => {
         (showPass == 'password') ? setShowPassword('text') : setShowPassword('password');
     }
 
     const testLogin = (e) => {
+        setReady(false)
         e.preventDefault();
         console.log("login cuy!")
         console.log("email: ", email)
@@ -43,11 +47,11 @@ const Login = props => {
         Axios.post('http://localhost:4000/v1/auth/login', body)
             .then(result => {
                 const responseAPI = result.data;
-                console.log("data: ", result.data);
-                console.log("status: ", result.status);
-                const isLogin = localStorage.setItem("isLogin",);
-                console.log("is login: ", localStorage.isLogin);
-
+                const isLogin = localStorage.setItem("isLogin", true);
+                localStorage.setItem("user", responseAPI.data.email);
+                localStorage.setItem("role", responseAPI.data.level.level);
+                navigate("/")
+                setReady(true)
             })
             .catch(err => {
                 // setError(err.response.data.message);
@@ -57,6 +61,8 @@ const Login = props => {
 
                 console.log("err: ", errorMessage);
                 setShow(true);
+                setReady(true)
+
             })
 
         console.log("login");
@@ -64,10 +70,10 @@ const Login = props => {
 
     return <div> {
         <Container>
-            <Row>
-                <Col md={{ span: 8, offset: 2 }}>
+            <Row style={{ margin:0, position:"absolute", top:"20%"  }}>
+                <Col md={{ span: 8  , offset: 2 }}>
 
-                    <MDBContainer className='my-5'>
+                    <Container fluid>
                         <MDBCard>
                             <MDBRow className='g-0 d-flex align-items-center p-3'>
 
@@ -76,7 +82,7 @@ const Login = props => {
                                 </MDBCol>
 
                                 <MDBCol md='8'>
-                                    <MDBCardBody style={{ padding: "40px" }}>
+                                    <MDBCardBody className="paddingLogin">
                                         <Form onSubmit={testLogin}>
                                             {(!show ? '' :
                                                 <Alert variant="danger" onClose={() => setShow(false)} dismissible>
@@ -85,9 +91,9 @@ const Login = props => {
                                                     </p>
                                                 </Alert>
                                             )}
-                                            <h6 className='mb-3'>Login Form</h6>
-                                            <MDBInput wrapperClass='mb-4' placeholder='Email address' id='form1' type='email' value={email} onChange={(e) => { setEmail(e.target.value) }} />
-                                            <MDBInput wrapperClass='mb-4' placeholder='Password' id='form2' type={showPass} value={password} onChange={(e) => { setPassword(e.target.value) }} />
+                                            <center><h6 className='mb-3'>Login Form</h6></center>
+                                            <MDBInput wrapperClass='mb-3 mt-6' placeholder='Email address' id='form1' type='email' value={email} onChange={(e) => { setEmail(e.target.value) }} required />
+                                            <MDBInput wrapperClass='mb-3' placeholder='Password' id='form2' type={showPass} value={password} onChange={(e) => { setPassword(e.target.value) }} required />
 
                                             <div className="d-flex justify-content-between">
                                                 <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Show Password' onChange={() => {
@@ -95,7 +101,7 @@ const Login = props => {
                                                 }} />
                                                 <a href="!#">Forgot password?</a>
                                             </div>
-                                            <Button type='submit' className="mb-4 w-100 mt-3" >Sign in</Button>
+                                            <Button type='submit' className="mb-4 w-100 mt-3" >{(!ready) ? <Spinner animation="border" role="login" size="sm"/> : ''} Sign in</Button>
                                         </Form>
                                     </MDBCardBody>
 
@@ -104,7 +110,7 @@ const Login = props => {
                             </MDBRow>
 
                         </MDBCard>
-                    </MDBContainer>
+                    </Container>
                 </Col>
             </Row>
         </Container>
