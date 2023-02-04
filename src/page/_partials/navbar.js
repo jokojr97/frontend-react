@@ -2,21 +2,32 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../index.css';
 import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 
 const NavMenu = props => {
+
+    const logout = () => {
+        var confirmLogout = window.confirm("Apakah anda yakin akan logout?")
+        console.log("confirm: ", confirmLogout);
+        confirmLogout && localStorage.clear();
+        <Navigate to="/login" />
+    }
+
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="sticky-top">
             <Container>
-                <Navbar.Brand href="/"><b>JOKORIYADI</b></Navbar.Brand>
+                <Navbar.Brand href="/"><b>E-PERJADIN</b></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto"></Nav>
                     <Nav defaultActiveKey={props.activeKey}>
-                        <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/portofolio">Portofolio</Nav.Link>
-                        <Nav.Link href="/blog">Blog</Nav.Link>
-                        <Nav.Link href="/about">About Me</Nav.Link>
-                        <Nav.Link href="/contact"><Button variant="outline-light" size="sm">Contact Me!</Button> </Nav.Link>
+                        <Nav.Link href="/">Dashboard</Nav.Link>
+                        <Nav.Link href="/perjadin">Perjalanan Dinas</Nav.Link>
+                        <Nav.Link href="/spt">SPT</Nav.Link>
+                        <Nav.Link href="/sppd">SPPD</Nav.Link>
+                        <Nav.Link href="/laporan">Laporan</Nav.Link>
+                        <Nav.Link href="/kwitansi">Kwitansi</Nav.Link>
+                        <Nav.Link onClick={logout}><Button variant="outline-light" size="sm">Logout!</Button> </Nav.Link>
                         {/* <NavDropdown title="About Me" id="collasible-nav-dropdown" variant="dark">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

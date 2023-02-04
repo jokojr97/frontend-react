@@ -13,10 +13,10 @@ import {
 }
     from 'mdb-react-ui-kit';
 
-    import { useNavigate } from "react-router-dom";
-    import Axios from "axios";
-    import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
-    import  "./style/login.scss"
+import { useNavigate } from "react-router-dom";
+import Axios from "axios";
+import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
+import "./style/login.scss"
 
 
 const Login = props => {
@@ -27,7 +27,7 @@ const Login = props => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setError] = React.useState('');
-    
+
     const [ready, setReady] = React.useState(true);
 
     const changeShowPassword = () => {
@@ -70,8 +70,8 @@ const Login = props => {
 
     return <div> {
         <Container>
-            <Row style={{ margin:0, position:"absolute", top:"20%"  }}>
-                <Col md={{ span: 8  , offset: 2 }}>
+            <Row style={{ margin: 0, position: "absolute", top: "20%" }}>
+                <Col md={{ span: 8, offset: 2 }}>
 
                     <Container fluid>
                         <MDBCard>
@@ -101,7 +101,7 @@ const Login = props => {
                                                 }} />
                                                 <a href="!#">Forgot password?</a>
                                             </div>
-                                            <Button type='submit' className="mb-4 w-100 mt-3" >{(!ready) ? <Spinner animation="border" role="login" size="sm"/> : ''} Sign in</Button>
+                                            <Button type='submit' className="mb-4 w-100 mt-3" >{(!ready) ? <Spinner animation="border" role="login" size="sm" /> : ''} Sign in</Button>
                                         </Form>
                                     </MDBCardBody>
 
