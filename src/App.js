@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useEffect } from 'react';
 import Login from './page/login';
-import Blog from './page/blog';
 import {
   BrowserRouter as Router,
   Route,
@@ -10,8 +9,6 @@ import {
 } from "react-router-dom";
 import NotFound from './page/Notfound';
 import { Spinner } from 'react-bootstrap';
-import About from './page/about';
-import Contact from './page/contact';
 // import { AOS } from 'aos';
 
 // mongggo db
