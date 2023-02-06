@@ -16,7 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
-import "./style/login.scss"
+import "../style/login.scss"
 
 
 const Login = props => {

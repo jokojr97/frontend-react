@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../index.css';
 import { Button, Container, Modal, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NavMenu = props => {
 
@@ -18,7 +18,9 @@ const NavMenu = props => {
         setLogout(true);
 
     }
+    const navigate = useNavigate();
 
+    const newLocal = 'active';
     return (
         <div>
             <Navbar collapseOnSelect expand="lg" bg="success" variant="dark" className="sticky-top">
@@ -28,12 +30,12 @@ const NavMenu = props => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto"></Nav>
                         <Nav defaultActiveKey={props.activeKey}>
-                            <Nav.Link href="/">Dashboard</Nav.Link>
-                            <Nav.Link href="/perjadin">Perjalanan Dinas</Nav.Link>
-                            <Nav.Link href="/spt">SPT</Nav.Link>
-                            <Nav.Link href="/sppd">SPPD</Nav.Link>
-                            <Nav.Link href="/laporan">Laporan</Nav.Link>
-                            <Nav.Link href="/kwitansi">Kwitansi</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/")} active={props.activeKey == "/"}>Dashboard</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/perjadin")} active={props.activeKey == "/perjadin"}>Perjalanan Dinas</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/spt")} active={props.activeKey == "/spt"}>SPT</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/sppd")} active={props.activeKey == "/sppd"}>SPPD</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/laporan")} active={props.activeKey == "/laporan"}>Laporan</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/kwitansi")} active={props.activeKey == "/kwitansi"}>Kwitansi</Nav.Link>
                             <Nav.Link onClick={handleShowModal}><Button variant="outline-light" size="sm">Logout!</Button> </Nav.Link>
                             {/* <NavDropdown title="About Me" id="collasible-nav-dropdown" variant="dark">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

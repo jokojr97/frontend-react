@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import Footr from '../_partials/footer'
-import NavMenu from '../_partials/navbar'
+import Footr from '../../_partials/footer'
+import NavMenu from '../../_partials/navbar'
 
-const Sppd = () => {
+const Laporan = () => {
     return (
         <div>
-            <NavMenu activeKey="/sppd" />
+            <NavMenu activeKey="/laporan" />
             <Container className='p-3'>
                 <Row>
                     <Col>
-                        <p>halaman Sppd</p>
+                        <p>halaman Laporan</p>
                     </Col>
                 </Row>
             </Container>
@@ -19,4 +19,4 @@ const Sppd = () => {
     )
 }
 
-export default Sppd
+export default Laporan

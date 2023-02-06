@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useEffect } from 'react';
-import Login from './page/login';
+import Login from './page/auth/login';
 import {
   BrowserRouter as Router,
   Route,
@@ -12,14 +12,14 @@ import { Spinner } from 'react-bootstrap';
 // import { AOS } from 'aos';
 
 // mongggo db
-import mongoose from 'mongoose';
 import DefaultRoute from './DefaultRoute';
 import Dashboard from './page/admin/dashboard';
-import Perjadin from './page/admin/perjadin';
-import Spt from './page/admin/spt';
-import Sppd from './page/admin/sppd';
-import Laporan from './page/admin/laporan';
-import Kwitansi from './page/admin/kwitansi';
+import Perjadin from './page/admin/perjadin/perjadin';
+import Spt from './page/admin/spt/spt';
+import Sppd from './page/admin/sppd/sppd';
+import Laporan from './page/admin/laporan/laporan';
+import Kwitansi from './page/admin/kwitansi/kwitansi';
+import CreatePerjadin from './page/admin/perjadin/create';
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -39,62 +39,12 @@ function App() {
           <Switch>
             <Route path="/" exact element={<DefaultRoute />} >
               <Route exact path='/' element={<Dashboard />} />
-              <Route path="/perjadin" exact element={<Perjadin
-                breadcumbs={[
-                  {
-                    name: "Home",
-                    link: "/"
-                  },
-                  {
-                    name: "Perjalanan Dinas",
-                    link: "/perjadin"
-                  }
-                ]}
-              />} />
-              <Route path="/spt" exact element={<Spt
-                breadcumbs={[
-                  {
-                    name: "Home",
-                    link: "/"
-                  },
-                  {
-                    name: "SPT",
-                    link: "/spt"
-                  }
-                ]} />} />
-              <Route path="/sppd" exact element={<Sppd
-                breadcumbs={[
-                  {
-                    name: "Home",
-                    link: "/"
-                  },
-                  {
-                    name: "SPPD",
-                    link: "/sppd"
-                  }
-                ]} />} />
-              <Route path="/laporan" exact element={<Laporan
-                breadcumbs={[
-                  {
-                    name: "Home",
-                    link: "/"
-                  },
-                  {
-                    name: "Laporan",
-                    link: "/laporan"
-                  }
-                ]} />} />
-              <Route path="/kwitansi" exact element={<Kwitansi
-                breadcumbs={[
-                  {
-                    name: "Home",
-                    link: "/"
-                  },
-                  {
-                    name: "Kwitansi",
-                    link: "/kwitansi"
-                  }
-                ]} />} />
+              <Route path="/perjadin" exact element={<Perjadin />} />
+              <Route path="/perjadin/create" exact element={<CreatePerjadin />} />
+              <Route path="/spt" exact element={<Spt />} />
+              <Route path="/sppd" exact element={<Sppd />} />
+              <Route path="/laporan" exact element={<Laporan />} />
+              <Route path="/kwitansi" exact element={<Kwitansi />} />
             </Route>
 
             <Route path="/login" exact element={<Login />} />
