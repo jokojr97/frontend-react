@@ -36,6 +36,7 @@ const NavMenu = props => {
                             <Nav.Link onClick={() => navigate("/sppd")} active={props.activeKey == "/sppd"}>SPPD</Nav.Link>
                             <Nav.Link onClick={() => navigate("/laporan")} active={props.activeKey == "/laporan"}>Laporan</Nav.Link>
                             <Nav.Link onClick={() => navigate("/kwitansi")} active={props.activeKey == "/kwitansi"}>Kwitansi</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/pegawai")} active={props.activeKey == "/pegawai"}>Pegawai</Nav.Link>
                             <Nav.Link onClick={handleShowModal}><Button variant="outline-light" size="sm">Logout!</Button> </Nav.Link>
                             {/* <NavDropdown title="About Me" id="collasible-nav-dropdown" variant="dark">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

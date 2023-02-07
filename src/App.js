@@ -20,6 +20,7 @@ import Sppd from './page/admin/sppd/sppd';
 import Laporan from './page/admin/laporan/laporan';
 import Kwitansi from './page/admin/kwitansi/kwitansi';
 import CreatePerjadin from './page/admin/perjadin/create';
+import Pegawai from './page/admin/pegawai/pegawai';
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -45,6 +46,7 @@ function App() {
               <Route path="/sppd" exact element={<Sppd />} />
               <Route path="/laporan" exact element={<Laporan />} />
               <Route path="/kwitansi" exact element={<Kwitansi />} />
+              <Route path="/pegawai" exact element={<Pegawai />} />
             </Route>
 
             <Route path="/login" exact element={<Login />} />
