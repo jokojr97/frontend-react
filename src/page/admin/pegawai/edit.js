@@ -3,8 +3,8 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { BsCheck, BsCheckCircle, BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload, BsX, BsXCircle } from 'react-icons/bs'
-import Axios from 'axios'
 import { LoaderCenter } from '../../_partials/loader'
+import Axios from 'axios'
 
 const EditPegawai = () => {
     const pathname = useLocation().pathname
@@ -27,6 +27,7 @@ const EditPegawai = () => {
     const [jabatan, setJabatan] = useState('')
     const [bidang, setBidang] = useState('')
     const [golongan, setGolongan] = useState('')
+
     console.log("url edit", urldata)
 
     const dataPegawai = () => {
@@ -34,6 +35,7 @@ const EditPegawai = () => {
         Axios.get(urldata).then(v => {
             console.log("v", v.data.data)
             setData(v.data.data);
+            setFormData(v.data.data)
             console.log("data", data)
             setReady(true)
         }).catch(err => {
@@ -45,19 +47,18 @@ const EditPegawai = () => {
         })
     }
 
-    const setFormData = () => {
-        setName(data.name)
-        setEmail(data.email)
-        setNip(data.nip)
-        setInstansi(data.instansi)
-        setBidang(data.bidang)
-        setJabatan(data.jabatan)
-        setGolongan(data.golongan)
+    const setFormData = (value) => {
+        setName(value.name)
+        setEmail(value.email)
+        setNip(value.nip)
+        setInstansi(value.instansi)
+        setBidang(value.bidang)
+        setJabatan(value.jabatan)
+        setGolongan(value.golongan)
     }
 
     React.useEffect(() => {
         dataPegawai()
-        setFormData()
     }, [])
 
 
@@ -78,7 +79,7 @@ const EditPegawai = () => {
     return (
 
         <div>
-
+            {console.log("nama", name)}
             {(!ready) ? <div style={{ marginTop: "10%" }}><center><LoaderCenter text=" sedang memuat..." /></center></div> :
                 <Container fluid>
                     <Row>
