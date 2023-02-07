@@ -6,7 +6,6 @@ import NavMenu from '../../_partials/navbar'
 const CreatePerjadin = () => {
     return (
         <div>
-            <NavMenu activeKey="/perjadin" />
             <Container>
                 <Row>
                     <Col>
@@ -14,7 +13,6 @@ const CreatePerjadin = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footr />
         </div>
     )
 }

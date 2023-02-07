@@ -6,7 +6,6 @@ import NavMenu from '../../_partials/navbar'
 const Spt = () => {
     return (
         <div>
-            <NavMenu activeKey="/spt" />
             <Container className='p-3'>
                 <Row>
                     <Col>
@@ -14,7 +13,6 @@ const Spt = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footr />
         </div>
     )
 }

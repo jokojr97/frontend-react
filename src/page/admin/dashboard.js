@@ -13,7 +13,6 @@ const Dashboard = () => {
     })
     return (
         <div>
-            <NavMenu activeKey="/" />
             <Container className='p-3'>
                 <Row>
                     <Col>
@@ -26,7 +25,6 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footr />
         </div>
     )
 }

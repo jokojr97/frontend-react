@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Form, InputGroup, ListGroup, Pagination, Row, Table } from 'react-bootstrap'
-import { BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload } from 'react-icons/bs'
+import { Alert, Button, Col, Container, Form, InputGroup, ListGroup, Pagination, Row, Table } from 'react-bootstrap'
+import { BsDownload, BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload } from 'react-icons/bs'
 import Footr from '../../_partials/footer'
 import NavMenu from '../../_partials/navbar'
 import Axios from "axios";
@@ -10,18 +10,23 @@ import { LoaderCenter } from '../../_partials/loader'
 
 const Pegawai = () => {
     const [data, setData] = useState([]);
+    const [show, setShow] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('');
     const [ready, setReady] = useState(true);
 
     const dataPegawai = async () => {
         setReady(false)
         await Axios.get('http://localhost:4000/v1/pegawai?page=1&perPage=10').then(v => {
-            console.log("value", v.data.data)
             setData(v.data.data);
             setReady(true)
-        }).catch(e => { console.log("err: ", e) })
+        }).catch(err => {
+            (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
+            setReady(true)
+            setShow(true)
+        })
     }
 
-    const header = ['Nama', 'Email', 'nip', 'instansi', 'jabatan', 'bidang', 'golongan']
+    const header = ['Nama', 'instansi', 'jabatan', 'bidang', 'golongan']
     const title = "Pegawai"
     const path = window.location.pathname
     const pathCreate = path + "/create"
@@ -34,11 +39,19 @@ const Pegawai = () => {
 
     return (
         <div>
-            <NavMenu activeKey="/pegawai" />
             <Container fluid>
                 <Row>
                     <Col md={{ span: 10, offset: 1 }} className='p-3'>
-                        <Button size="sm" className='float-end btn btn-primary' onClick={() => { history(pathCreate) }}> <BsPlus /> Tambah {title}</Button>
+                        {(!show ? '' :
+                            <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                                <p>
+                                    {errorMessage}
+                                </p>
+                            </Alert>
+                        )}
+                        <Button size="sm" className='float-end btn btn-primary' style={{ marginRight: "5px" }} onClick={() => { history(pathCreate) }}> <BsPlus /> Tambah {title}</Button>
+                        <Button size="sm" className='float-end btn btn-success' style={{ marginRight: "5px" }} onClick={() => { history(pathCreate) }}> <BsUpload /> Import {title}</Button>
+                        <Button size="sm" className='float-end btn btn-danger' style={{ marginRight: "5px" }} onClick={() => { history(pathCreate) }}> <BsDownload /> Download Template {title}</Button>
                         <h4><b>Halaman {title}</b></h4>
                         <hr className='mt-3' />
                         <Row>
@@ -84,8 +97,6 @@ const Pegawai = () => {
                                                     return (
                                                         <tr>
                                                             <td key="name">{v.name}</td>
-                                                            <td key="email">{v.email}</td>
-                                                            <td key="nip">{v.nip}</td>
                                                             <td key="instansi">{v.instansi}</td>
                                                             <td key="jabatan">{v.jabatan}</td>
                                                             <td key="bidang">{v.bidang}</td>
@@ -93,10 +104,10 @@ const Pegawai = () => {
                                                             <td key="action" style={{ width: "20%", paddingLeft: 20, paddingRight: 20 }}>
                                                                 <Row>
                                                                     <Col md="6" className='d-grid' style={{ padding: 0 }}>
-                                                                        <Button variant='primary' size='sm' className='m-1' aria-label='Detail'><BsEye /> Detail</Button>
+                                                                        <Button variant='primary' size='sm' className='m-1' onClick={() => { history(`/pegawai/${v._id}`) }} aria-label='Detail'><BsEye /> Detail</Button>
                                                                     </Col>
                                                                     <Col md="6" className='d-grid m-0' style={{ padding: 0 }}>
-                                                                        <Button variant='warning' size='sm' className='m-1' aria-label='Edit'><BsPencil /> Edit</Button>
+                                                                        <Button variant='warning' size='sm' className='m-1' aria-label='Edit' onClick={() => { history(`/pegawai/edit/${v._id}`) }} ><BsPencil /> Edit</Button>
                                                                     </Col>
                                                                 </Row>
                                                                 <Row>
@@ -138,7 +149,6 @@ const Pegawai = () => {
                     </Col>
                 </Row>
             </Container >
-            <Footr />
         </div >
     )
 }

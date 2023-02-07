@@ -21,6 +21,9 @@ import Laporan from './page/admin/laporan/laporan';
 import Kwitansi from './page/admin/kwitansi/kwitansi';
 import CreatePerjadin from './page/admin/perjadin/create';
 import Pegawai from './page/admin/pegawai/pegawai';
+import CreatePegawai from './page/admin/pegawai/create';
+import DetailPegawai from './page/admin/pegawai/detail';
+import EditPegawai from './page/admin/pegawai/edit';
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -47,6 +50,9 @@ function App() {
               <Route path="/laporan" exact element={<Laporan />} />
               <Route path="/kwitansi" exact element={<Kwitansi />} />
               <Route path="/pegawai" exact element={<Pegawai />} />
+              <Route path="/pegawai/create" exact element={<CreatePegawai />} />
+              <Route path="/pegawai/:idPegawai" exact element={<DetailPegawai />} />
+              <Route path="/pegawai/edit/:idPegawai" exact element={<EditPegawai />} />
             </Route>
 
             <Route path="/login" exact element={<Login />} />

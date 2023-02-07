@@ -6,7 +6,6 @@ import NavMenu from '../../_partials/navbar'
 const Kwitansi = () => {
     return (
         <div>
-            <NavMenu activeKey="/kwitansi" />
             <Container className='p-3'>
                 <Row>
                     <Col>
@@ -14,7 +13,6 @@ const Kwitansi = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footr />
         </div>
     )
 }
