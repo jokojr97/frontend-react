@@ -26,7 +26,7 @@ const Pegawai = () => {
         })
     }
 
-    const header = ['Nama', 'instansi', 'jabatan', 'bidang', 'golongan']
+    const header = ['Nama', 'Instansi', 'Bidang', 'Jabatan', 'Golongan']
     const title = "Pegawai"
     const path = window.location.pathname
     const pathCreate = path + "/create"
@@ -98,8 +98,8 @@ const Pegawai = () => {
                                                         <tr>
                                                             <td key="name">{v.name}</td>
                                                             <td key="instansi">{v.instansi}</td>
-                                                            <td key="jabatan">{v.jabatan}</td>
                                                             <td key="bidang">{v.bidang}</td>
+                                                            <td key="jabatan">{v.jabatan}</td>
                                                             <td key="golongan">{v.golongan}</td>
                                                             <td key="action" style={{ width: "20%", paddingLeft: 20, paddingRight: 20 }}>
                                                                 <Row>
