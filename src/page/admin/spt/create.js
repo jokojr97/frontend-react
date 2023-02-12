@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
 const CreateSpt = () => {
-  return <div>CreateSpt</div>;
-};
+  return (
+    <div>CreateSpt</div>
+  )
+}
 
-export default CreateSpt;
+export default CreateSpt

@@ -2,35 +2,19 @@ import React, { useState } from "react";
 
 import Moment from "moment-timezone";
 
-import {
-  Alert,
-  Button,
-  Col,
-  Container,
-  Form,
-  InputGroup,
-  Modal,
-  Pagination,
-  Row,
-  Table,
-} from "react-bootstrap";
-import {
-  BsEye,
-  BsPencil,
-  BsPlus,
-  BsSearch,
-  BsSortUp,
-  BsTrash,
-  BsUpload,
-} from "react-icons/bs";
+import { Alert, Button, Col, Container, Form, InputGroup, Modal, Row, Table, } from "react-bootstrap";
+import { BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload, } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import Pagination from 'react-js-pagination'
 
 import Axios from "axios";
 import { LoaderCenter } from "../../_partials/loader";
 import moment from "moment-timezone";
+import envi from 'react-dotenv';
 
 const Perjadin = () => {
-  const urlapi = "http://localhost:5000/v1/perjadin";
+  const urlapi = process.env.REACT_APP_URL_PERJADIN;
+
   const [show, setShow] = useState(false);
   const [idDelete, setIdDelete] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -52,9 +36,7 @@ const Perjadin = () => {
       })
       .catch((err) => {
         // console.log(err)
-        err.response.data
-          ? setErrorMessage(err.response.data.message)
-          : setErrorMessage(err.message);
+        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
         setReady(true);
         setShow(true);
       });
@@ -66,9 +48,7 @@ const Perjadin = () => {
         setDataCount(v.data.data.length);
       })
       .catch((err) => {
-        err.response.data
-          ? setErrorMessage(err.response.data.message)
-          : setErrorMessage(err.message);
+        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
         setReady(true);
         setShow(true);
       });
@@ -95,9 +75,7 @@ const Perjadin = () => {
         loadData();
       })
       .catch((err) => {
-        err.response.data
-          ? setErrorMessage(err.response.data.message)
-          : setErrorMessage(err.message);
+        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
         setReady(true);
         setShow(true);
       });
@@ -132,40 +110,19 @@ const Perjadin = () => {
       <Container fluid>
         <Row>
           <Col md={{ span: 10, offset: 1 }} className="p-3">
-            {!show ? (
-              ""
-            ) : (
-              <Alert
-                variant="danger"
-                onClose={() => setShow(false)}
-                key="alert"
-                dismissible
-              >
+            {!show ? ("") : (
+              <Alert variant="danger" onClose={() => setShow(false)} key="alert" dismissible >
                 <p>{errorMessage}</p>
               </Alert>
             )}
-            <Button
-              size="sm"
-              className="float-end btn btn-primary"
-              onClick={() => {
-                history(pathCreate);
-              }}
-            >
-              {" "}
-              <BsPlus /> Tambah {title}
+            <Button size="sm" className="float-end btn btn-primary" onClick={() => { history(pathCreate); }}>
+              {" "} <BsPlus /> Tambah {title}
             </Button>
-            <h4>
-              <b>Halaman {title}</b>
-            </h4>
+            <h4><b>Halaman {title}</b></h4>
             <hr className="mt-3" />
             <Row>
               <Col xs="3" md="1">
-                <Form.Select
-                  aria-label="Default select example"
-                  onChange={(e) => {
-                    handlerPerPage(e.target.value);
-                  }}
-                >
+                <Form.Select aria-label="Default select example" onChange={(e) => { handlerPerPage(e.target.value); }} >
                   <option value="10">10</option>
                   <option value="1">1</option>
                   <option value="5">5</option>
@@ -175,11 +132,7 @@ const Perjadin = () => {
               </Col>
               <Col md={{ span: 5, offset: 6 }} xs="9">
                 <InputGroup className="mb-3">
-                  <Form.Control
-                    placeholder="Search Data"
-                    aria-label="Search Data"
-                    aria-describedby="basic-addon2"
-                  />
+                  <Form.Control placeholder="Search Data" aria-label="Search Data" aria-describedby="basic-addon2" />
                   <Button variant="outline-secondary" id="button-addon2">
                     <BsSearch /> Search
                   </Button>
@@ -196,11 +149,7 @@ const Perjadin = () => {
                         return (
                           <th key={v}>
                             <center>
-                              {" "}
-                              {v}
-                              <i className="float-end text-secondary">
-                                <BsSortUp />
-                              </i>{" "}
+                              {" "} {v} <i className="float-end text-secondary">  <BsSortUp />   </i>{" "}
                             </center>
                           </th>
                         );
@@ -246,38 +195,17 @@ const Perjadin = () => {
                             <td key={perihalKey}>{v.perihal}</td>
                             <td key={lokasiKey}>{v.lokasi}</td>
                             <td key={tanggal_berangkatKey}>
-                              {tglBerangkat
-                                .tz("Asia/Jakarta")
-                                .format("DD MMM YYYY")}
+                              {tglBerangkat.tz("Asia/Jakarta").format("DD MMM YYYY")}
                             </td>
                             <td key={lamaKey}>
-                              <center>{lamaPerjalanan} Hari</center>
+                              <center>{lamaPerjalanan + 1} Hari</center>
                             </td>
                             <td key={jenis_perjadinKey}>{v.jenis_perjadin}</td>
                             <td key={tahunKey}>{v.tahun}</td>
-                            <td
-                              key={actionKey}
-                              style={{
-                                width: "20%",
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                              }}
-                            >
+                            <td key={actionKey} style={{ width: "20%", paddingLeft: 20, paddingRight: 20, }}  >
                               <Row>
-                                <Col
-                                  md="6"
-                                  className="d-grid"
-                                  style={{ padding: 0 }}
-                                >
-                                  <Button
-                                    variant="primary"
-                                    size="sm"
-                                    className="m-1"
-                                    onClick={() => {
-                                      history(`/perjadin/${v._id}`);
-                                    }}
-                                    aria-label="Detail"
-                                  >
+                                <Col md="6" className="d-grid" style={{ padding: 0 }}>
+                                  <Button variant="primary" size="sm" className="m-1" onClick={() => { history(`/perjadin/${v._id}`); }} aria-label="Detail" >
                                     <BsEye /> Detail
                                   </Button>
                                 </Col>
@@ -286,47 +214,22 @@ const Perjadin = () => {
                                   className="d-grid m-0"
                                   style={{ padding: 0 }}
                                 >
-                                  <Button
-                                    variant="warning"
-                                    size="sm"
-                                    className="m-1"
-                                    aria-label="Edit"
-                                    onClick={() => {
-                                      history(`/perjadin/edit/${v._id}`);
-                                    }}
+                                  <Button variant="warning" size="sm" className="m-1" aria-label="Edit" onClick={() => {
+                                    history(`/perjadin/edit/${v._id}`);
+                                  }}
                                   >
                                     <BsPencil /> Edit
                                   </Button>
                                 </Col>
                               </Row>
                               <Row>
-                                <Col
-                                  md="6"
-                                  className="d-grid"
-                                  style={{ padding: 0 }}
-                                >
-                                  <Button
-                                    variant="danger"
-                                    size="sm"
-                                    className="m-1"
-                                    aria-label="Delete"
-                                    onClick={() => handleShowModal(v._id)}
-                                  >
+                                <Col md="6" className="d-grid" style={{ padding: 0 }} >
+                                  <Button variant="danger" size="sm" className="m-1" aria-label="Delete" onClick={() => handleShowModal(v._id)} >
                                     <BsTrash /> Delete
                                   </Button>
                                 </Col>
-                                <Col
-                                  md="6"
-                                  className="d-grid"
-                                  style={{ padding: 0 }}
-                                >
-                                  <Button
-                                    variant="success"
-                                    size="sm"
-                                    className="m-1"
-                                    aria-label="Upload"
-                                  >
-                                    <BsUpload /> Upload
+                                <Col md="6" className="d-grid" style={{ padding: 0 }}>
+                                  <Button variant="success" size="sm" className="m-1" aria-label="Upload"> <BsUpload /> Upload
                                   </Button>
                                 </Col>
                               </Row>

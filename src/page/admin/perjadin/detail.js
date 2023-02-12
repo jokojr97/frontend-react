@@ -4,7 +4,7 @@ import { Alert, Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const DetailPerjadin = () => {
-  const urlapi = "http://localhost:5000/v1/perjadin";
+  const urlapi = process.env.REACT_APP_URL_PERJADIN;
   const pathname = window.location.pathname;
   const idPegawai = pathname.replace("/perjadin/", "");
   const [data, setData] = useState([]);

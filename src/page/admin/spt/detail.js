@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
 const DetailSpt = () => {
-  return <div>DetailSpt</div>;
-};
+  return (
+    <div>DetailSpt</div>
+  )
+}
 
-export default DetailSpt;
+export default DetailSpt

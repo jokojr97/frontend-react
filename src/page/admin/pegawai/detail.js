@@ -21,7 +21,7 @@ const DetailPegawai = () => {
   const [show, setShow] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [ready, setReady] = useState(false);
-  const urldata = `http://localhost:4000/v1/pegawai/${idPegawai}`;
+  const urldata = `${process.env.REACT_APP_URL_PEGAWAI}/${idPegawai}`;
   // console.log("url", urldata)
 
   const dataPegawai = async () => {

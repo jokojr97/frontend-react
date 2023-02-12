@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
 const EditPerjadin = () => {
-  return <div>EditPerjadin</div>;
-};
+  return (
+    <div>EditPerjadin</div>
+  )
+}
 
-export default EditPerjadin;
+export default EditPerjadin

@@ -81,13 +81,13 @@ const CreatePegawai = () => {
             password: password
         }
 
-        const urlapi = "http://localhost:4000/v1/pegawai/insert";
+        const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/insert`;
 
         Axios.post(urlapi, body).then(value => {
-            console.log(body)
+            // console.log(body)
             history("/pegawai")
         }).catch(err => {
-            console.log("err", err.response.data.data.data);
+            // console.log("err", err.response.data.data.data);
             // setErrForm(err);
             (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
             if (err.response.data.data.errorStatus == 400) {

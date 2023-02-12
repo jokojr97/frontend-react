@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Alert, Button, Col, Container, Form, InputGroup, ListGroup, Modal, Row, Table } from 'react-bootstrap'
 import { BsDownload, BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload } from 'react-icons/bs'
-import Footr from '../../_partials/footer'
-import NavMenu from '../../_partials/navbar'
 import Axios from "axios";
-import Tables from '../../_partials/tables'
 import { useNavigate } from 'react-router-dom'
 import { LoaderCenter } from '../../_partials/loader'
 import Pagination from 'react-js-pagination'
-import { async } from 'q'
-
 
 const Pegawai = () => {
     const [data, setData] = useState([]);
@@ -18,15 +13,15 @@ const Pegawai = () => {
     const [show, setShow] = useState(false)
     const [errorMessage, setErrorMessage] = useState('');
     const [ready, setReady] = useState(true);
-    
+
     const [datacount, setDataCount] = useState(1)
     const [page, setPage] = useState(1)
     const [perPage, setPerPage] = useState(10)
 
     const dataPegawai = async () => {
         setReady(false)
-        await Axios.get(`http://localhost:4000/v1/pegawai?page=${page}&perPage=${perPage}`).then(v => {
-            setData(v.data.data);                                     
+        await Axios.get(`${process.env.REACT_APP_URL_PEGAWAI}?page=${page}&perPage=${perPage}`).then(v => {
+            setData(v.data.data);
             setReady(true)
         }).catch(err => {
             (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
@@ -36,7 +31,7 @@ const Pegawai = () => {
     }
 
     const getDataCount = async () => {
-        await Axios.get(`http://localhost:4000/v1/pegawai`).then(v => {
+        await Axios.get(`${process.env.REACT_APP_URL_PEGAWAI}`).then(v => {
             setDataCount(v.data.data.length)
         }).catch(err => {
             (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
@@ -48,7 +43,7 @@ const Pegawai = () => {
     const handlePageChange = (pageNumber) => {
         console.log(`active page is ${pageNumber}`);
         setPage(pageNumber)
-      }
+    }
 
     const handleCloseModal = () => {
         setIdDelete('')
@@ -62,7 +57,7 @@ const Pegawai = () => {
 
     const deletePegawai = (id) => {
         // console.log("id", id)
-        Axios.delete(`http://localhost:4000/v1/pegawai/${id}`).then(v => {
+        Axios.delete(`${process.env.REACT_APP_URL_PEGAWAI}/${id}`).then(v => {
             handleCloseModal()
             dataPegawai()
         }).catch(err => {
@@ -73,7 +68,7 @@ const Pegawai = () => {
     }
 
     const handlerPerPage = (value) => {
-        setPerPage(parseInt(value, 10)); 
+        setPerPage(parseInt(value, 10));
         setPage(1)
 
     }
@@ -147,7 +142,7 @@ const Pegawai = () => {
 
                                         {
                                             (!ready) ? <tr><td colSpan={8} ><center><LoaderCenter text=" sedang memuat..." /></center></td></tr> :
-                                                data.map((v,index) => {
+                                                data.map((v, index) => {
                                                     const nameKey = `name${index}`;
                                                     const instansiKey = `instansi${index}`;
                                                     const bidangKey = `bidang${index}`;
@@ -188,17 +183,17 @@ const Pegawai = () => {
                                     </tbody>
                                 </Table>
                                 <div className='float-end' >
-                                    <Pagination 
-                                    innerClass='pagination'
-                                    itemClass='page-item'
-                                    linkClass='page-link'
-                                    activePage={page}
-                                    itemsCountPerPage={perPage}
-                                    totalItemsCount={datacount}
-                                    pageRangeDisplayed={5}
-                                    onChange={(e) => {
-                                        handlePageChange(e)               
-                                    }}
+                                    <Pagination
+                                        innerClass='pagination'
+                                        itemClass='page-item'
+                                        linkClass='page-link'
+                                        activePage={page}
+                                        itemsCountPerPage={perPage}
+                                        totalItemsCount={datacount}
+                                        pageRangeDisplayed={5}
+                                        onChange={(e) => {
+                                            handlePageChange(e)
+                                        }}
                                     />
                                 </div>
                             </Col>
@@ -216,7 +211,7 @@ const Pegawai = () => {
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Batal
                     </Button>
-                    <Button variant="primary" onClick={() => { deletePegawai(idDelete) } }>
+                    <Button variant="primary" onClick={() => { deletePegawai(idDelete) }}>
                         Delete
                     </Button>
                 </Modal.Footer>

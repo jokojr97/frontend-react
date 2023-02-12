@@ -11,7 +11,7 @@ const EditPegawai = () => {
     // const pathname = window.location.pathname
     // const location = useLocation()
     const idPegawai = pathname.replace("/pegawai/edit/", '')
-    const urldata = `http://localhost:4000/v1/pegawai/${idPegawai}`
+    const urldata = `${process.env.REACT_APP_URL_PEGAWAI}/${idPegawai}`
 
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
@@ -137,7 +137,7 @@ const EditPegawai = () => {
                 golongan: golongan
             }
             console.log("body", body)
-            const urlapi = 'http://localhost:4000/v1/pegawai/update/nonpass'
+            const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/update/nonpass`
             console.log("url", urlapi)
             saveEdit(urlapi, body)
         } else {
@@ -153,7 +153,7 @@ const EditPegawai = () => {
                 golongan: golongan,
                 password: password
             }
-            const urlapi = 'http://localhost:4000/v1/pegawai/update'
+            const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/update`
             console.log("url", urlapi)
 
             saveEdit(urlapi, body)
