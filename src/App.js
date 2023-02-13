@@ -63,22 +63,22 @@ function App() {
               <Route exact path="/" element={<Dashboard />} />
               <Route path="/perjadin" exact element={<Perjadin />} />
               <Route path="/perjadin/create" exact element={<CreatePerjadin />} />
-              <Route path="/perjadin/:idPegawai" exact element={<DetailPerjadin />} />
-              <Route path="/perjadin/edit/:idPegawai" exact element={<EditPerjadin />} />
+              <Route path="/perjadin/:idPerjadin" exact element={<DetailPerjadin />} />
+              <Route path="/perjadin/edit/:idPerjadin" exact element={<EditPerjadin />} />
               <Route path="/spt" exact element={<Spt />} />
-              <Route path="/spt/create" exact element={<CreateSpt />} />
-              <Route path="/spt/:idPegawai" exact element={<DetailSpt />} />
-              <Route path="/spt/edit/:idPegawai" exact element={<EditSpt />} />
+              <Route path="/spt/create/:idPerjadin" exact element={<CreateSpt />} />
+              <Route path="/spt/:idSpt" exact element={<DetailSpt />} />
+              <Route path="/spt/edit/:idSpt" exact element={<EditSpt />} />
               <Route path="/sppd" exact element={<Sppd />} />
-              <Route path="/sppd/create" exact element={<CreateSppd />} />
+              <Route path="/sppd/create/:idPerjadin" exact element={<CreateSppd />} />
               <Route path="/sppd/:idPegawai" exact element={<DetailSppd />} />
               <Route path="/sppd/edit/:idPegawai" exact element={<EditSppd />} />
               <Route path="/laporan" exact element={<Laporan />} />
-              <Route path="/laporan/create" exact element={<CreateLaporan />} />
+              <Route path="/laporan/create/:idPerjadin" exact element={<CreateLaporan />} />
               <Route path="/laporan/:idPegawai" exact element={<DetailLaporan />} />
               <Route path="/laporan/edit/:idPegawai" exact element={<EditLaporan />} />
               <Route path="/kwitansi" exact element={<Kwitansi />} />
-              <Route path="/laporan/create" exact element={<CreateKwitansi />} />
+              <Route path="/laporan/create/:idPerjadin" exact element={<CreateKwitansi />} />
               <Route path="/laporan/:idPegawai" exact element={<DetailKwitansi />} />
               <Route path="/laporan/edit/:idPegawai" exact element={<EditKwitansi />} />
               <Route path="/pegawai" exact element={<Pegawai />} />

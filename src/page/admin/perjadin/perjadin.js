@@ -93,6 +93,9 @@ const Perjadin = () => {
     "Lama Perjalanan",
     "Jenis Perjalanan",
     "Tahun",
+    "SPPD",
+    "SPT",
+    "Foto Kegiatan",
   ];
 
   const history = useNavigate();
@@ -122,7 +125,7 @@ const Perjadin = () => {
             <hr className="mt-3" />
             <Row>
               <Col xs="3" md="1">
-                <Form.Select aria-label="Default select example" onChange={(e) => { handlerPerPage(e.target.value); }} >
+                <Form.Select aria-label="Default select example" onChange={(e) => { handlerPerPage(e.target.value); }} style={{ fontSize: "12px" }}  >
                   <option value="10">10</option>
                   <option value="1">1</option>
                   <option value="5">5</option>
@@ -141,7 +144,7 @@ const Perjadin = () => {
             </Row>
             <Row>
               <Col>
-                <Table responsive="sm" striped bordered hover>
+                <Table responsive="sm" striped bordered hover style={{ fontSize: "12px" }}>
                   <thead>
                     <tr>
                       {/* <th>#</th> */}
@@ -154,20 +157,13 @@ const Perjadin = () => {
                           </th>
                         );
                       })}
-                      <th key="action">
-                        <center>
-                          Action
-                          <i className="float-end text-secondary">
-                            <BsSortUp />
-                          </i>
-                        </center>
-                      </th>
+                      <th key="action"> <center> Action <i className="float-end text-secondary"> <BsSortUp /> </i></center></th>
                     </tr>
                   </thead>
                   <tbody>
                     {!ready ? (
                       <tr>
-                        <td colSpan={8}>
+                        <td colSpan={11}>
                           <center>
                             <LoaderCenter text=" sedang memuat..." />
                           </center>
@@ -189,6 +185,9 @@ const Perjadin = () => {
                         const jenis_perjadinKey = `jenis_perjadin${index}`;
                         const tahunKey = `tahun${index}`;
                         const actionKey = `action${index}`;
+                        const sptLinkKey = `linkSpt${index}`;
+                        const ssppdLinkKey = `linkSppd${index}`;
+                        const imageLinkKey = `linkImage${index}`;
 
                         return (
                           <tr key={index}>
@@ -202,10 +201,13 @@ const Perjadin = () => {
                             </td>
                             <td key={jenis_perjadinKey}>{v.jenis_perjadin}</td>
                             <td key={tahunKey}>{v.tahun}</td>
-                            <td key={actionKey} style={{ width: "20%", paddingLeft: 20, paddingRight: 20, }}  >
+                            <td key={ssppdLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/sppd/create/${v._id}`)}><BsPlus />Buat </a></td>
+                            <td key={sptLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/spt/create/${v._id}`)}><BsPlus />Buat </a></td>
+                            <td key={imageLinkKey} style={{ width: "10%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/image/create/${v._id}`)}><BsPlus />Upload </a></td>
+                            <td key={actionKey} style={{ width: "18%", paddingLeft: 20, paddingRight: 20, }}  >
                               <Row>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
-                                  <Button variant="primary" size="sm" className="m-1" onClick={() => { history(`/perjadin/${v._id}`); }} aria-label="Detail" >
+                                  <Button variant="primary" size="sm" className="m-1" style={{ fontSize: "12px" }} onClick={() => { history(`/perjadin/${v._id}`); }} aria-label="Detail" >
                                     <BsEye /> Detail
                                   </Button>
                                 </Col>
@@ -214,7 +216,7 @@ const Perjadin = () => {
                                   className="d-grid m-0"
                                   style={{ padding: 0 }}
                                 >
-                                  <Button variant="warning" size="sm" className="m-1" aria-label="Edit" onClick={() => {
+                                  <Button variant="warning" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Edit" onClick={() => {
                                     history(`/perjadin/edit/${v._id}`);
                                   }}
                                   >
@@ -224,12 +226,12 @@ const Perjadin = () => {
                               </Row>
                               <Row>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }} >
-                                  <Button variant="danger" size="sm" className="m-1" aria-label="Delete" onClick={() => handleShowModal(v._id)} >
+                                  <Button variant="danger" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Delete" onClick={() => handleShowModal(v._id)} >
                                     <BsTrash /> Delete
                                   </Button>
                                 </Col>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
-                                  <Button variant="success" size="sm" className="m-1" aria-label="Upload"> <BsUpload /> Upload
+                                  <Button variant="success" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Upload"> <BsUpload /> Upload
                                   </Button>
                                 </Col>
                               </Row>
