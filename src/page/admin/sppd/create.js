@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import { Alert, Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
+import '../admin.scss'
 
 const CreateSppd = () => {
   const pathname = useLocation().pathname
-  // const pathname = window.location.pathname
-  // const location = useLocation()
   const idPerjadin = pathname.replace("/sppd/create/", '')
   const urlPerjadin = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`
-  const urlCreate = `${process.env.REACT_APP_URL_PERJADIN}/create`
+  const urlCreate = `${process.env.REACT_APP_URL_SPPD}/insert`
   const urlPegawai = `${process.env.REACT_APP_URL_PEGAWAI}`
 
   const [dataPerjalanan, setDataPerlalanan] = useState('')
@@ -22,11 +21,9 @@ const CreateSppd = () => {
 
   const [nomorSppd, setNomorSppd] = useState('')
   const [textPemberiPerintah, setTextPemberiPerintah] = useState('')
-  const [idPemberiPerintah, setIdPemberiPerintah] = useState('')
   const [pemberiPerintah, setPemberiPerintah] = useState([])
   const [penerimaPerintah, setPenerimaPerintah] = useState([])
   const [textPenerimaPerintah, setTextPenerimaPerintah] = useState('')
-  const [idPenerimaPerintah, setIdPenerimaPerintah] = useState('')
   const [perihal, setPerihal] = useState('')
   const [angkutan, setAngkutan] = useState('')
   const [tempatBernagkat, setTempatBerangkat] = useState('')
@@ -41,7 +38,8 @@ const CreateSppd = () => {
   const [tanggalSppd, setTanggalSppd] = useState('')
   const [tahun, setTahun] = useState('');
   const [dataPegawai, setDataPegawai] = useState([])
-  const [sugesstion, setSugesstion] = useState([])
+  const [sugesstionPejabat, setSugesstionPejabat] = useState([])
+  const [sugesstionPegawai, setSugesstionPegawai] = useState([])
 
   const [errorNomorSppd, setErrorNomorSppd] = useState('')
   const [errorPemberiPerintah, setErrorPemberiPerintah] = useState()
@@ -105,8 +103,12 @@ const CreateSppd = () => {
   const setData = (val) => {
     setDataPerlalanan(val)
     setPerihal(val.perihal)
-    setTanggalBerangkat(val.tanggal_berangkat)
-    setTanggalKembali(val.tanggal_kembali)
+    setTahun(val.tahun)
+    const tglBerangkat = moment(val.tanggal_berangkat);
+    const tglKembali = moment(val.tanggal_kembali);
+    setTanggalBerangkat(tglBerangkat.tz("Asia/Jakarta").format("DD MMM YYYY"))
+    setTanggalKembali(tglKembali.tz("Asia/Jakarta").format("DD MMM YYYY"))
+    setTempatTujuan(val.lokasi)
   }
 
   const loadData = () => {
@@ -139,34 +141,18 @@ const CreateSppd = () => {
     setShow(true);
   }
 
-  const getPegawaiById = (id) => {
-    const urlPegawai = `${process.env.REACT_APP_URL_PEGAWAI}/${id}`
-    Axios.get(urlPegawai).then(v => {
-      return v.data.data
-    }).catch(err => catchErr(err))
-  }
-
   const submitForm = (e) => {
     e.preventDefault();
-    setPemberiPerintah(getPegawaiById(idPemberiPerintah))
-    setPenerimaPerintah(getPegawaiById(idPenerimaPerintah))
-
     const body = {
       nomor_sppd: nomorSppd,
       pejabat_yang_memberi_perintah: {
         name: pemberiPerintah.name,
         jabatan: pemberiPerintah.jabatan,
-        pangkat: pemberiPerintah.pangkat,
+        pangkat: "pemberiPerintah.pangkat",
         nip: pemberiPerintah.nip,
         golongan: pemberiPerintah.golongan,
       },
-      pegawai_yang_diperintahkan: [{
-        name: penerimaPerintah.name,
-        jabatan: penerimaPerintah.jabatan,
-        pangkat: penerimaPerintah.pangkat,
-        nip: penerimaPerintah.nip,
-        golongan: penerimaPerintah.golongan,
-      }],
+      pegawai_yang_diperintahkan: penerimaPerintah,
       id_perjadin: dataPerjalanan._id,
       perihal: perihal,
       angkutan: angkutan,
@@ -183,18 +169,56 @@ const CreateSppd = () => {
       tahun: tahun,
     }
 
-    console.log("body: ", body)
-    // Axios.post(urlCreate, body).then(v => {
-    //   history("/sppd");
-    // }).catch(err => catchErr(err))
+    // console.log("body: ", body)
+    Axios.post(urlCreate, body).then(v => {
+      history("/sppd");
+    }).catch(err => catchErr(err))
   }
 
-  const sugesstHandler = (data) => {
-    setTextPemberiPerintah(data.name);
-    setIdPemberiPerintah(data._id)
-    setPemberiPerintah(data)
-    console.log("sugesst", data)
-    setSugesstion('')
+  const sugesstPejabatHandler = (data) => {
+    setTextPemberiPerintah(`${data.name} - ${data.bidang}`);
+    setPemberiPerintah(data);
+    // console.log("sugesst", pemberiPerintah)
+    setSugesstionPejabat('')
+  }
+
+  const sugesstPegawaiHandler = (data) => {
+    setTextPenerimaPerintah(`${data.name} - ${data.bidang}`)
+    if (!penerimaPerintah) {
+      setPenerimaPerintah({
+        name: data.name,
+        jabatan: data.jabatan,
+        pangkat: "data.pangkat",
+        nip: data.nip,
+        golongan: data.golongan,
+      })
+    } else {
+      penerimaPerintah.push(
+        {
+          name: data.name,
+          jabatan: data.jabatan,
+          pangkat: "data.pangkat",
+          nip: data.nip,
+          golongan: data.golongan,
+        }
+      )
+      setPenerimaPerintah(penerimaPerintah);
+    }
+    // console.log("pgawai", penerimaPerintah)
+    setSugesstionPegawai('')
+  }
+
+  const pegawaiOnChangeHandler = (text) => {
+    setTextPenerimaPerintah(text)
+    let matches = []
+    if (text.length > 0) {
+      matches = dataPegawai.filter(pegawai => {
+        const regex = new RegExp(`${textPenerimaPerintah}`, "gi")
+        return pegawai.name.match(regex)
+      })
+    }
+    // setPenerimaPerintah('')
+    setSugesstionPegawai(matches)
   }
 
   const pejabatOnChangeHandler = (text) => {
@@ -207,11 +231,11 @@ const CreateSppd = () => {
         return pegawai.name.match(regex)
       })
     }
-    // console.log("matches", matches)
-    setSugesstion(matches)
+    setSugesstionPejabat(matches)
   }
 
   React.useEffect(() => {
+    // cekSPPD()
     loadData()
     loadPegawai()
   }, [])
@@ -233,18 +257,92 @@ const CreateSppd = () => {
               <Col md="4">
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" disabled />
+                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Masukkan Perihal" disabled />
                   {(!errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
                       {errorPerihal}
                     </Form.Text>
                   }
                 </Form.Group>
+                <Row>
+                  <Col style={{ paddingRight: "5px" }} xs="4">
+                    <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                      <Form.Label className="mb-1">Tgl Berangkat</Form.Label>
+                      <Form.Control style={{ fontSize: "13px" }} id="tanggalBerangkat" type="text" value={tanggalBerangkat} onChange={(e) => { setTanggalBerangkat(e.target.value) }} disabled />
+                      {(!errorTanggalKembali) ? '' :
+                        <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                          {errorTanggalKembali}
+                        </Form.Text>
+                      }
+                    </Form.Group>
+                  </Col>
+                  <Col style={{ paddingLeft: "5px", paddingRight: "5px" }} xs="4">
+                    <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                      <Form.Label className="mb-1">Tgl Kembali</Form.Label>
+                      <Form.Control style={{ fontSize: "13px" }} id="tanggalKembali" type="text" value={tanggalKembali} onChange={(e) => { setTanggalKembali(e.target.value) }} disabled />
+                      {(!errorTanggalKembali) ? '' :
+                        <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                          {errorTanggalKembali}
+                        </Form.Text>
+                      }
+                    </Form.Group>
+                  </Col>
+                  <Col style={{ paddingLeft: "5px" }} xs="4">
+                    <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                      <Form.Label className="mb-1">Lama Perjlanan</Form.Label>
+                      <Form.Control style={{ fontSize: "13px" }} id="tanggalKembali" type="text" value={`${lamaPerjalanan} Hari`} onChange={(e) => { setTanggalKembali(e.target.value) }} disabled />
+                      {(!errorTanggalKembali) ? '' :
+                        <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                          {errorTanggalKembali}
+                        </Form.Text>
+                      }
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Tempat Tujuan</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="tujuan" type="text" value={tempatTujuan} onChange={(e) => { setTempatTujuan(e.target.value) }} placeholder="Masukkan Tjuan" disabled />
+                  {(!errorTempatTujuan) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {errorTempatTujuan}
+                    </Form.Text>
+                  }
+                </Form.Group>
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Tempat Tujuan</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="tempatTujuan" type="text" value={tempatTujuan} onChange={(e) => { setTempatTujuan(e.target.value) }} placeholder="Masukkan Tempat Tujuan" disabled />
+                  {(!errorTempatBernagkat) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {errorTempatBernagkat}
+                    </Form.Text>
+                  }
+                </Form.Group>
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Tahun</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="tahun" type="text" value={tahun} onChange={(e) => { setTempatTujuan(e.target.value) }} placeholder="Masukkan Tempat Tujuan" disabled />
+                  {(!errorTempatTujuan) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {errorTempatTujuan}
+                    </Form.Text>
+                  }
+                </Form.Group>
+              </Col>
+              <Col md="4">
+
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Nomor SPPD</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="noSppd" type="text" value={nomorSppd} onChange={(e) => { setNomorSppd(e.target.value) }} placeholder="Masukkan Nomor SPPD" />
+                  {(!errorNomorSppd) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {errorNomorSppd}
+                    </Form.Text>
+                  }
+                </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Pejabat yang memberi perintah</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="pemberiPerintah" type="text" value={textPemberiPerintah} onChange={(e) => { pejabatOnChangeHandler(e.target.value) }} placeholder="Enter Perihal" />
-                  {sugesstion && sugesstion.map((sugest, i) => {
-                    return <div key={i} style={{ backgroundColor: "white", cursor: "pointer" }} onClick={(e => sugesstHandler(sugest))}>{sugest.name} - {sugest.bidang}</div>
+                  <Form.Control style={{ fontSize: "13px" }} autoComplete="off" id="pemberiPerintah" type="text" value={textPemberiPerintah} onChange={(e) => { pejabatOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
+                  {sugesstionPejabat && sugesstionPejabat.map((sugest, i) => {
+                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPejabatHandler(sugest))}>{sugest.name} - {sugest.bidang}</div>
                   })}
                   {(!errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -253,8 +351,11 @@ const CreateSppd = () => {
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
+                  <Form.Label className="mb-1">Pegawai yang merima Perintah</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="pegawi" type="text" autoComplete="off" value={textPenerimaPerintah} onChange={(e) => { pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
+                  {sugesstionPegawai && sugesstionPegawai.map((sugest, i) => {
+                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.bidang}</div>
+                  })}
                   {(!errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
                       {errorPerihal}
@@ -262,115 +363,67 @@ const CreateSppd = () => {
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Angkutan</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="angkutan" type="text" value={angkutan} onChange={(e) => { setAngkutan(e.target.value) }} placeholder="Masukkan Angkutan" />
+                  {(!errorAnngkutan) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorAnngkutan}
                     </Form.Text>
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Tempat Berangkat</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="tempatBerangkat" type="text" value={tempatBernagkat} onChange={(e) => { setTempatBerangkat(e.target.value) }} placeholder="Masukkan Tempat Berangkat" />
+                  {(!errorTempatBernagkat) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
-                    </Form.Text>
-                  }
-                </Form.Group>
-              </Col>
-              <Col md="4">
-
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
-                    </Form.Text>
-                  }
-                </Form.Group>
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
-                    </Form.Text>
-                  }
-                </Form.Group>
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
-                    </Form.Text>
-                  }
-                </Form.Group>
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
-                    </Form.Text>
-                  }
-                </Form.Group>
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorTempatBernagkat}
                     </Form.Text>
                   }
                 </Form.Group>
               </Col>
               <Col md="4">
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Instansi</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="instansi" type="text" value={instansi} onChange={(e) => { setInstansi(e.target.value) }} placeholder="Masukkan Instansi" />
+                  {(!errorInstansi) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorInstansi}
                     </Form.Text>
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Dikeluarkan di</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="dikeluarkanDi" type="text" value={dikeluarkanDi} onChange={(e) => { setDikeluarkanDi(e.target.value) }} placeholder="Masukkan Lokasi Dikeluarkan Surat" />
+                  {(!errorDikeluarkanDi) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorDikeluarkanDi}
                     </Form.Text>
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Tanggal Sppd</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="tanggalSppd" type="date" value={tanggalSppd} onChange={(e) => { setTanggalSppd(e.target.value) }} placeholder="Masukkan Tanggal SPPD" />
+                  {(!errorTanggalSppd) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorTanggalSppd}
                     </Form.Text>
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Kode Rekening</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="kodeRekening" type="text" value={kodeRekening} onChange={(e) => { setKodeRekening(e.target.value) }} placeholder="Masukkan Kode Rekening" />
+                  {(!errorKodeRekening) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorKodeRekening}
                     </Form.Text>
                   }
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                  <Form.Label className="mb-1">Perihal</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="perihal" type="text" value={perihal} onChange={(e) => { setPerihal(e.target.value) }} placeholder="Enter Perihal" />
-                  {(!errorPerihal) ? '' :
+                  <Form.Label className="mb-1">Keterangan Lain</Form.Label>
+                  <Form.Control as="textarea" style={{ fontSize: "13px" }} id="keteranganLain" type="text" value={keteranganLain} onChange={(e) => { setKeteranganLain(e.target.value) }} placeholder="Masukkan Keterangan" />
+                  {(!errorKeteranganLain) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {errorPerihal}
+                      {errorKeteranganLain}
                     </Form.Text>
                   }
                 </Form.Group>
@@ -383,8 +436,8 @@ const CreateSppd = () => {
             </Row>
           </Form>
         </Col>
-      </Row>
-    </Container>
+      </Row >
+    </Container >
   </div >;
 };
 

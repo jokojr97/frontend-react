@@ -10,10 +10,10 @@ import Pagination from 'react-js-pagination'
 import Axios from "axios";
 import { LoaderCenter } from "../../_partials/loader";
 import moment from "moment-timezone";
-import envi from 'react-dotenv';
 
 const Perjadin = () => {
   const urlapi = process.env.REACT_APP_URL_PERJADIN;
+  const urlsppd = process.env.REACT_APP_URL_SPPD;
 
   const [show, setShow] = useState(false);
   const [idDelete, setIdDelete] = useState("");
@@ -36,11 +36,15 @@ const Perjadin = () => {
       })
       .catch((err) => {
         // console.log(err)
-        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-        setReady(true);
-        setShow(true);
+        catchErr(err)
       });
   };
+
+  const catchErr = (err) => {
+    err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
+    setReady(true);
+    setShow(true);
+  }
 
   const getDataCount = async () => {
     await Axios.get(`${urlapi}`)
@@ -48,14 +52,12 @@ const Perjadin = () => {
         setDataCount(v.data.data.length);
       })
       .catch((err) => {
-        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-        setReady(true);
-        setShow(true);
+        catchErr(err)
       });
   };
 
   const handlePageChange = (pageNumber) => {
-    console.log(`active page is ${pageNumber}`);
+    // console.log(`active page is ${pageNumber}`);
     setPage(pageNumber);
   };
 
@@ -75,11 +77,13 @@ const Perjadin = () => {
         loadData();
       })
       .catch((err) => {
-        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-        setReady(true);
-        setShow(true);
+        catchErr(err)
       });
   };
+
+  const getSPPD = (id) => {
+    Axios.get(`${urlsppd}/${id}`).then(v => { return v }).catch(err => catchErr(err))
+  }
 
   const handlerPerPage = (value) => {
     setPerPage(parseInt(value, 10));
@@ -176,7 +180,7 @@ const Perjadin = () => {
                         const lama = kembali.diff(berangkat);
                         const duration = moment.duration(lama);
                         const lamaPerjalanan = duration.days();
-                        const tglBerangkat = Moment(v.tanggal_berangkat);
+                        const tglBerangkat = moment(v.tanggal_berangkat);
 
                         const perihalKey = `perihal${index}`;
                         const lokasiKey = `lokasi${index}`;

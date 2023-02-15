@@ -71,12 +71,12 @@ function App() {
               <Route path="/spt/edit/:idSpt" exact element={<EditSpt />} />
               <Route path="/sppd" exact element={<Sppd />} />
               <Route path="/sppd/create/:idPerjadin" exact element={<CreateSppd />} />
-              <Route path="/sppd/:idPegawai" exact element={<DetailSppd />} />
-              <Route path="/sppd/edit/:idPegawai" exact element={<EditSppd />} />
+              <Route path="/sppd/:idSppd" exact element={<DetailSppd />} />
+              <Route path="/sppd/edit/:idSppd" exact element={<EditSppd />} />
               <Route path="/laporan" exact element={<Laporan />} />
               <Route path="/laporan/create/:idPerjadin" exact element={<CreateLaporan />} />
-              <Route path="/laporan/:idPegawai" exact element={<DetailLaporan />} />
-              <Route path="/laporan/edit/:idPegawai" exact element={<EditLaporan />} />
+              <Route path="/laporan/:idLaporan" exact element={<DetailLaporan />} />
+              <Route path="/laporan/edit/:idLaporan" exact element={<EditLaporan />} />
               <Route path="/kwitansi" exact element={<Kwitansi />} />
               <Route path="/laporan/create/:idPerjadin" exact element={<CreateKwitansi />} />
               <Route path="/laporan/:idPegawai" exact element={<DetailKwitansi />} />
