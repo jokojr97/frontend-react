@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, Button, Col, Container, Form, InputGroup, ListGroup, Modal, Row, Table } from 'react-bootstrap'
-import { BsDownload, BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload } from 'react-icons/bs'
+import { BsDownload, BsEye, BsPencil, BsPlus, BsSearch, BsSortDown, BsSortUp, BsTrash, BsUpload } from 'react-icons/bs'
 import Axios from "axios";
 import { useNavigate } from 'react-router-dom'
 import { LoaderCenter } from '../../_partials/loader'
@@ -13,30 +13,46 @@ const Pegawai = () => {
     const [show, setShow] = useState(false)
     const [errorMessage, setErrorMessage] = useState('');
     const [ready, setReady] = useState(true);
+    const [search, setSearch] = useState('')
+    const [sort, setSort] = useState('')
+    const [sortval, setSortval] = useState('desc')
 
     const [datacount, setDataCount] = useState(1)
     const [page, setPage] = useState(1)
     const [perPage, setPerPage] = useState(10)
+    // http://localhost:4000/v1/pegawai?page=1&perPage=10&sort=name&sortval=desc&search
+    // http://localhost:4000/v1/pegawai?page=1&perPage=10&search=&sort=nama&sortval=desc
+    const urlload = `${process.env.REACT_APP_URL_PEGAWAI}?page=${page}&perPage=${perPage}&sort=${sort}&sortval=${sortval}&search=${search}`
+
+    const searchHandle = (val) => {
+        setSearch(val.toLowerCase())
+    }
 
     const dataPegawai = async () => {
         setReady(false)
-        await Axios.get(`${process.env.REACT_APP_URL_PEGAWAI}?page=${page}&perPage=${perPage}`).then(v => {
+        await Axios.get(urlload).then(v => {
             setData(v.data.data);
+            setShow(false)
             setReady(true)
+            console.log(urlload)
         }).catch(err => {
-            (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-            setReady(true)
-            setShow(true)
+            catchErr(err)
         })
+    }
+
+    const catchErr = (err) => {
+        (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
+        setData([])
+        setDataCount(0)
+        setReady(true)
+        setShow(true)
     }
 
     const getDataCount = async () => {
         await Axios.get(`${process.env.REACT_APP_URL_PEGAWAI}`).then(v => {
             setDataCount(v.data.data.length)
         }).catch(err => {
-            (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-            setReady(true)
-            setShow(true)
+            catchErr(err)
         })
     }
 
@@ -61,9 +77,7 @@ const Pegawai = () => {
             handleCloseModal()
             dataPegawai()
         }).catch(err => {
-            (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-            setReady(true)
-            setShow(true)
+            catchErr(err)
         })
     }
 
@@ -73,16 +87,26 @@ const Pegawai = () => {
 
     }
 
-    const header = ['Nama', 'Instansi', 'Bidang', 'Jabatan', 'Golongan']
+    const header = ['name', 'instansi', 'bidang', 'jabatan', 'golongan']
     const title = "Pegawai"
     const path = window.location.pathname
     const pathCreate = path + "/create"
     const history = useNavigate();
 
+    const sortHandle = (v) => {
+        if (sortval == "asc") {
+            setSortval("desc")
+            setSort(v)
+        } else {
+            setSortval("asc")
+            setSort(v)
+        }
+    }
+
     React.useEffect(() => {
         dataPegawai()
         getDataCount()
-    }, [page, perPage])
+    }, [page, perPage, search, sort, sortval])
 
 
     return (
@@ -115,6 +139,8 @@ const Pegawai = () => {
                             <Col md={{ span: 5, offset: 6 }} xs="9">
                                 <InputGroup className="mb-3">
                                     <Form.Control
+                                        value={search}
+                                        onChange={(e) => { searchHandle(e.target.value) }}
                                         placeholder="Search Data"
                                         aria-label="Search Data"
                                         aria-describedby="basic-addon2"
@@ -133,9 +159,9 @@ const Pegawai = () => {
                                         <tr>
                                             {/* <th>#</th> */}
                                             {header.map(v => {
-                                                return <th key={v}><center> {v}<i className='float-end text-secondary'><BsSortUp /></i> </center></th>
+                                                return <th key={v} style={{ textTransform: "capitalize" }}><center> {v}<i className='float-end text-secondary'>{(sortval == "asc") ? <BsSortUp class={(v == sort) ? "text-black" : ''} onClick={() => sortHandle(v)} /> : <BsSortDown class={(v == sort) ? "text-black" : ''} onClick={() => sortHandle(v)} />}</i> </center></th>
                                             })}
-                                            <th><center>Action<i className='float-end text-secondary'><BsSortUp /></i></center></th>
+                                            <th><center>Action</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>

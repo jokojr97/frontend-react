@@ -96,6 +96,10 @@ const DetailPegawai = () => {
                     <td colSpan={2}>{data.jabatan}</td>
                   </tr>
                   <tr>
+                    <th>Pangkat</th>
+                    <td colSpan={2}>{data.pangkat}</td>
+                  </tr>
+                  <tr>
                     <th>Golongan</th>
                     <td colSpan={2}>{data.golongan}</td>
                   </tr>

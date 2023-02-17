@@ -17,6 +17,7 @@ const CreatePegawai = () => {
     const [jabatan, setJabatan] = useState('')
     const [bidang, setBidang] = useState('')
     const [golongan, setGolongan] = useState('')
+    const [pangkat, setPangkat] = useState('')
 
     const [errorname, setErrorName] = useState('')
     const [erroremail, setErrorEmail] = useState('')
@@ -27,6 +28,7 @@ const CreatePegawai = () => {
     const [errorjabatan, setErrorJabatan] = useState('')
     const [errorbidang, setErrorBidang] = useState('')
     const [errorgolongan, setErrorGolongan] = useState('')
+    const [errorPangkat, setErrorPangkat] = useState('')
     // const [errForm, setErrForm] = useState([])
     const [ready, setReady] = useState(false)
     const [show, setShow] = useState(false)
@@ -60,6 +62,8 @@ const CreatePegawai = () => {
                 setErrorJabatan(v.msg)
             } else if (v.param == "golongan") {
                 setErrorGolongan(v.msg)
+            } else if (v.param == "pangkat") {
+                setErrorPangkat(v.msg)
             } else {
                 setErrorMessage(v.msg)
             }
@@ -70,7 +74,7 @@ const CreatePegawai = () => {
 
         e.preventDefault();
         const body = {
-            name: name,
+            name: name.toLowerCase(),
             email: email,
             repeatPassword: repeatPassword,
             nip: nip,
@@ -78,6 +82,7 @@ const CreatePegawai = () => {
             jabatan: jabatan,
             bidang: bidang,
             golongan: golongan,
+            pangkat: pangkat,
             password: password
         }
 
@@ -105,7 +110,7 @@ const CreatePegawai = () => {
         <div>
             <Container fluid>
                 <Row>
-                    <Col md={{ span: 8, offset: 2 }} className='p-3'>
+                    <Col md={{ span: 8, offset: 2 }} className='p-3' style={{ fontSize: "13px" }}>
                         <h4>Tambah Pegawai</h4>
                         <hr />
                         {(!show ? '' :
@@ -118,38 +123,47 @@ const CreatePegawai = () => {
                         <Form onSubmit={submitForm}>
                             <Row>
                                 <Col md="7">
-                                    <Form.Group className="mb-3" controlId="name">
+                                    <Form.Group className="mb-1" controlId="name">
                                         <Form.Label>Nama</Form.Label>
-                                        <Form.Control id="name" type="text" onChange={(e) => { setName(e.target.value) }} placeholder="Enter name" />
+                                        <Form.Control style={{ fontSize: "13px" }} id="name" type="text" onChange={(e) => { setName(e.target.value) }} placeholder="Enter name" />
                                         {(!errorname) ? '' :
                                             <Form.Text className="text-danger">
                                                 {errorname}
                                             </Form.Text>
                                         }
                                     </Form.Group>
-                                    <Form.Group className="mb-3" controlId="email">
+                                    <Form.Group className="mb-1" controlId="email">
                                         <Form.Label>Alamat Email</Form.Label>
-                                        <Form.Control id="email" type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Enter email" />
+                                        <Form.Control style={{ fontSize: "13px" }} id="email" type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Enter email" />
                                         {(!erroremail) ? '' :
                                             <Form.Text className="text-danger">
                                                 {erroremail}
                                             </Form.Text>
                                         }
                                     </Form.Group>
-                                    <Form.Group className="mb-3" controlId="email">
+                                    <Form.Group className="mb-1" controlId="email">
                                         <Form.Label>NIP</Form.Label>
-                                        <Form.Control id="nip" type="text" onChange={(e) => { setNip(e.target.value) }} placeholder="Enter NIP" />
+                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { setNip(e.target.value) }} placeholder="Enter NIP" />
                                         {(!errornip) ? '' :
                                             <Form.Text className="text-danger">
                                                 {errornip}
                                             </Form.Text>
                                         }
                                     </Form.Group>
+                                    <Form.Group className="mb-1" controlId="formBasicEmail">
+                                        <Form.Label>Instansi</Form.Label>
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setInstansi(e.target.value) }} placeholder="Enter Instansi" />
+                                        {(!errorinstansi) ? '' :
+                                            <Form.Text className="text-danger">
+                                                {errorinstansi}
+                                            </Form.Text>
+                                        }
+                                    </Form.Group>
                                     <Row>
                                         <Col md="6">
-                                            <Form.Group className="mb-3" controlId="passwod">
+                                            <Form.Group className="mb-1" controlId="passwod">
                                                 <Form.Label>Password</Form.Label>
-                                                <Form.Control type={showPassword} onChange={(e) => { setPassword(e.target.value) }} placeholder="Enter password" />
+                                                <Form.Control style={{ fontSize: "13px" }} type={showPassword} onChange={(e) => { setPassword(e.target.value) }} placeholder="Enter password" />
                                                 <Form.Check type='checkbox' label="Show Password" onChange={(e) => { changeShowPassword() }} checked={(showPassword == "text") ? true : false} />
                                                 {(!errorpassword) ? '' :
                                                     <Form.Text className="text-danger">
@@ -159,9 +173,9 @@ const CreatePegawai = () => {
                                             </Form.Group>
                                         </Col>
                                         <Col md="6">
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Group className="mb-1" controlId="formBasicEmail">
                                                 <Form.Label>Ulangi Password</Form.Label>
-                                                <Form.Control type={showPassword} onChange={(e) => { setRepeatPassword(e.target.value) }} placeholder="Repeat Password" />
+                                                <Form.Control style={{ fontSize: "13px" }} type={showPassword} onChange={(e) => { setRepeatPassword(e.target.value) }} placeholder="Repeat Password" />
                                                 <Form.Check type='checkbox' label="Show Password" onChange={(e) => { changeShowPassword() }} checked={(showPassword == "text") ? true : false} />
                                                 {(!errorrepeatPassword) ? '' :
                                                     <Form.Text className="text-danger">
@@ -173,39 +187,39 @@ const CreatePegawai = () => {
                                     </Row>
                                 </Col>
                                 <Col md="5">
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label>Instansi</Form.Label>
-                                        <Form.Control type="text" onChange={(e) => { setInstansi(e.target.value) }} placeholder="Enter Instansi" />
-                                        {(!errorinstansi) ? '' :
-                                            <Form.Text className="text-danger">
-                                                {errorinstansi}
-                                            </Form.Text>
-                                        }
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Jabatan</Form.Label>
-                                        <Form.Control type="text" onChange={(e) => { setJabatan(e.target.value) }} placeholder="Enter Jabatan" />
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setJabatan(e.target.value) }} placeholder="Enter Jabatan" />
                                         {(!errorjabatan) ? '' :
                                             <Form.Text className="text-danger">
                                                 {errorjabatan}
                                             </Form.Text>
                                         }
                                     </Form.Group>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Bidang</Form.Label>
-                                        <Form.Control type="text" onChange={(e) => { setBidang(e.target.value) }} placeholder="Enter Bidang" />
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setBidang(e.target.value) }} placeholder="Enter Bidang" />
                                         {(!errorbidang) ? '' :
                                             <Form.Text className="text-danger">
                                                 {errorbidang}
                                             </Form.Text>
                                         }
                                     </Form.Group>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Golongan</Form.Label>
-                                        <Form.Control type="text" onChange={(e) => { setGolongan(e.target.value) }} placeholder="Enter Golongan" />
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setGolongan(e.target.value) }} placeholder="Enter Golongan" />
                                         {(!errorgolongan) ? '' :
                                             <Form.Text className="text-danger">
                                                 {errorgolongan}
+                                            </Form.Text>
+                                        }
+                                    </Form.Group>
+                                    <Form.Group className="mb-1" controlId="email">
+                                        <Form.Label>Pangkat</Form.Label>
+                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { setPangkat(e.target.value) }} placeholder="Enter Pangkat" />
+                                        {(!errorPangkat) ? '' :
+                                            <Form.Text className="text-danger">
+                                                {errorPangkat}
                                             </Form.Text>
                                         }
                                     </Form.Group>

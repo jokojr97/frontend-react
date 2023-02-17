@@ -12,6 +12,7 @@ const CreateSppd = () => {
   const urlPerjadin = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`
   const urlCreate = `${process.env.REACT_APP_URL_SPPD}/insert`
   const urlPegawai = `${process.env.REACT_APP_URL_PEGAWAI}`
+  const urlpdf = `${process.env.REACT_APP_URL_SPPD}/pdf/create`
 
   const [dataPerjalanan, setDataPerlalanan] = useState('')
 
@@ -169,21 +170,25 @@ const CreateSppd = () => {
       tahun: tahun,
     }
 
+    console.log("body", body)
+
+    Axios.post(urlpdf, body).then(
+      Axios.post(urlCreate, body).then(v => {
+        // history("/sppd");
+      }).catch(err => catchErr(err))
+    ).catch(err => catchErr(err))
     // console.log("body: ", body)
-    Axios.post(urlCreate, body).then(v => {
-      history("/sppd");
-    }).catch(err => catchErr(err))
   }
 
   const sugesstPejabatHandler = (data) => {
-    setTextPemberiPerintah(`${data.name} - ${data.bidang}`);
+    setTextPemberiPerintah(`${data.name} - ${data.jabatan}`);
     setPemberiPerintah(data);
     // console.log("sugesst", pemberiPerintah)
     setSugesstionPejabat('')
   }
 
   const sugesstPegawaiHandler = (data) => {
-    setTextPenerimaPerintah(`${data.name} - ${data.bidang}`)
+    setTextPenerimaPerintah(`${data.name} - ${data.jabatan}`)
     if (!penerimaPerintah) {
       setPenerimaPerintah({
         name: data.name,
@@ -342,7 +347,7 @@ const CreateSppd = () => {
                   <Form.Label className="mb-1">Pejabat yang memberi perintah</Form.Label>
                   <Form.Control style={{ fontSize: "13px" }} autoComplete="off" id="pemberiPerintah" type="text" value={textPemberiPerintah} onChange={(e) => { pejabatOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
                   {sugesstionPejabat && sugesstionPejabat.map((sugest, i) => {
-                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPejabatHandler(sugest))}>{sugest.name} - {sugest.bidang}</div>
+                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPejabatHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
                   })}
                   {(!errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -354,7 +359,7 @@ const CreateSppd = () => {
                   <Form.Label className="mb-1">Pegawai yang merima Perintah</Form.Label>
                   <Form.Control style={{ fontSize: "13px" }} id="pegawi" type="text" autoComplete="off" value={textPenerimaPerintah} onChange={(e) => { pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
                   {sugesstionPegawai && sugesstionPegawai.map((sugest, i) => {
-                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.bidang}</div>
+                    return <div key={i} className="sugesst-form" onClick={(e => sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
                   })}
                   {(!errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
