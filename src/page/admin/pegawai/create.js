@@ -90,6 +90,8 @@ const CreatePegawai = () => {
 
         Axios.post(urlapi, body).then(value => {
             // console.log(body)
+            localStorage.setItem("message", "Pegawai Berhasil ditambah!");
+            localStorage.setItem("messageType", "success");
             history("/pegawai")
         }).catch(err => {
             // console.log("err", err.response.data.data.data);

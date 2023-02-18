@@ -20,8 +20,24 @@ const Pegawai = () => {
     const [datacount, setDataCount] = useState(1)
     const [page, setPage] = useState(1)
     const [perPage, setPerPage] = useState(10)
-    // http://localhost:4000/v1/pegawai?page=1&perPage=10&sort=name&sortval=desc&search
-    // http://localhost:4000/v1/pegawai?page=1&perPage=10&search=&sort=nama&sortval=desc
+
+    const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState('')
+    const isMessage = localStorage.message != null;
+    const messg = localStorage.message;
+    const messgval = localStorage.messageType;
+
+    const setAlert = () => {
+        if (isMessage) {
+            setMessage(messg)
+            console.log("is message", message)
+            setMessageType(messgval)
+            setShow(true)
+            localStorage.removeItem("message")
+            localStorage.removeItem("messageType")
+        }
+    }
+
     const urlload = `${process.env.REACT_APP_URL_PEGAWAI}?page=${page}&perPage=${perPage}&sort=${sort}&sortval=${sortval}&search=${search}`
 
     const searchHandle = (val) => {
@@ -32,7 +48,7 @@ const Pegawai = () => {
         setReady(false)
         await Axios.get(urlload).then(v => {
             setData(v.data.data);
-            setShow(false)
+            // setShow(false)
             setReady(true)
             console.log(urlload)
         }).catch(err => {
@@ -106,18 +122,20 @@ const Pegawai = () => {
     React.useEffect(() => {
         dataPegawai()
         getDataCount()
-    }, [page, perPage, search, sort, sortval])
+        setAlert()
+    }, [page, perPage, search, sort, sortval, show])
 
 
     return (
         <div>
+            {console.log("pesan", message)}
             <Container fluid>
                 <Row>
                     <Col md={{ span: 10, offset: 1 }} className='p-3'>
                         {(!show ? '' :
-                            <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                            <Alert variant={messageType} onClose={() => setShow(false)} dismissible>
                                 <p>
-                                    {errorMessage}
+                                    {(message) ? message : errorMessage}
                                 </p>
                             </Alert>
                         )}

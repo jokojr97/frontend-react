@@ -50,6 +50,8 @@ const Login = props => {
                 const isLogin = localStorage.setItem("isLogin", true);
                 localStorage.setItem("user", responseAPI.data.email);
                 localStorage.setItem("role", responseAPI.data.level.level);
+                localStorage.setItem("message", "Anda Berhasil Login");
+                localStorage.setItem("messageType", "success");
                 navigate("/")
                 setReady(true)
             })

@@ -92,6 +92,9 @@ const EditPegawai = () => {
     const saveEdit = (urlapi, body) => {
         Axios.patch(urlapi, body).then(value => {
             // console.log(body)
+            localStorage.setItem("message", "Data pegawai berhasil di edit!");
+            localStorage.setItem("messageType", "success");
+            // console.log("pesan", localStorage.message)
             history("/pegawai")
         }).catch(err => {
             console.log("err", err.response.data.data.data);

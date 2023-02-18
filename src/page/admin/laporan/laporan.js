@@ -4,6 +4,22 @@ import Footr from '../../_partials/footer'
 import NavMenu from '../../_partials/navbar'
 
 const Laporan = () => {
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState('')
+    const isMessage = localStorage.message != null;
+    const messagevariant = localStorage.messageType != null;
+
+    const setAlert = () => {
+        if (isMessage) {
+            setMessage(isMessage)
+            setMessageType(messagevariant)
+            setShow(true)
+            localStorage.removeItem("message")
+            localStorage.removeItem("messageType")
+        }
+    }
+
     return (
         <div>
             <Container className='p-3'>

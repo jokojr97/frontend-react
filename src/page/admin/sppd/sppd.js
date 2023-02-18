@@ -22,6 +22,21 @@ const Sppd = () => {
     const [perPage, setPerPage] = useState(10);
 
 
+    const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState('')
+    const isMessage = localStorage.message != null;
+    const messagevariant = localStorage.messageType != null;
+
+    const setAlert = () => {
+        if (isMessage) {
+            setMessage(isMessage)
+            setMessageType(messagevariant)
+            setShow(true)
+            localStorage.removeItem("message")
+            localStorage.removeItem("messageType")
+        }
+    }
+
     const loadData = async () => {
         setReady(false);
         await Axios.get(`${urlapi}?page=${page}&perPage=${perPage}`)
@@ -97,6 +112,7 @@ const Sppd = () => {
     React.useEffect(() => {
         loadData();
         getDataCount();
+        setAlert()
     }, [page, perPage]);
 
     return (

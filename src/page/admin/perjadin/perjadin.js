@@ -26,6 +26,22 @@ const Perjadin = () => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
+  const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('')
+  const isMessage = localStorage.message != null;
+  const messagevariant = localStorage.messageType != null;
+
+  const setAlert = () => {
+    if (isMessage) {
+      setMessage(isMessage)
+      setMessageType(messagevariant)
+      setShow(true)
+      localStorage.removeItem("message")
+      localStorage.removeItem("messageType")
+    }
+  }
+
+
   const loadData = async () => {
     setReady(false);
     await Axios.get(`${urlapi}?page=${page}&perPage=${perPage}`)
@@ -108,6 +124,7 @@ const Perjadin = () => {
   const title = "Perjalanan Dinas";
 
   React.useEffect(() => {
+    setAlert()
     loadData();
     getDataCount();
   }, [page, perPage]);
