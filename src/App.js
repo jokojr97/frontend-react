@@ -38,6 +38,11 @@ import EditLaporan from "./page/admin/laporan/edit";
 import CreateKwitansi from "./page/admin/kwitansi/create";
 import DetailKwitansi from "./page/admin/kwitansi/detail";
 import EditKwitansi from "./page/admin/kwitansi/edit";
+import ControllerPegawai from "./controller/pegawai";
+import ControllerPerjadin from "./controller/perjadin";
+import ControllerCreatePegawai from "./controller/pegawai/create";
+import ControllerDetailPegawai from "./controller/pegawai/detail";
+import ControllerEditPegawai from "./controller/pegawai/edit";
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -61,7 +66,7 @@ function App() {
           <Switch>
             <Route path="/" exact element={<DefaultRoute />}>
               <Route exact path="/" element={<Dashboard />} />
-              <Route path="/perjadin" exact element={<Perjadin />} />
+              <Route path="/perjadin" exact element={<ControllerPerjadin />} />
               <Route path="/perjadin/create" exact element={<CreatePerjadin />} />
               <Route path="/perjadin/:idPerjadin" exact element={<DetailPerjadin />} />
               <Route path="/perjadin/edit/:idPerjadin" exact element={<EditPerjadin />} />
@@ -81,10 +86,10 @@ function App() {
               <Route path="/laporan/create/:idPerjadin" exact element={<CreateKwitansi />} />
               <Route path="/laporan/:idPegawai" exact element={<DetailKwitansi />} />
               <Route path="/laporan/edit/:idPegawai" exact element={<EditKwitansi />} />
-              <Route path="/pegawai" exact element={<Pegawai />} />
-              <Route path="/pegawai/create" exact element={<CreatePegawai />} />
-              <Route path="/pegawai/:idPegawai" exact element={<DetailPegawai />} />
-              <Route path="/pegawai/edit/:idPegawai" exact element={<EditPegawai />} />
+              <Route path="/pegawai" exact element={<ControllerPegawai />} />
+              <Route path="/pegawai/create" exact element={<ControllerCreatePegawai />} />
+              <Route path="/pegawai/:idPegawai" exact element={<ControllerDetailPegawai />} />
+              <Route path="/pegawai/edit/:idPegawai" exact element={<ControllerEditPegawai />} />
             </Route>
 
             <Route path="/login" exact element={<Login />} />

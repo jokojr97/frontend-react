@@ -1,112 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 
 import { BsCheckCircle, BsXCircle } from 'react-icons/bs'
-import Axios from 'axios'
 
-const CreatePegawai = () => {
-    const [showPassword, setShowPassword] = useState('password');
-
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [repeatPassword, setRepeatPassword] = useState('')
-    const [password, setPassword] = useState('')
-    const [nip, setNip] = useState('')
-    const [instansi, setInstansi] = useState('')
-    const [jabatan, setJabatan] = useState('')
-    const [bidang, setBidang] = useState('')
-    const [golongan, setGolongan] = useState('')
-    const [pangkat, setPangkat] = useState('')
-
-    const [errorname, setErrorName] = useState('')
-    const [erroremail, setErrorEmail] = useState('')
-    const [errorrepeatPassword, setErrorRepeatPassword] = useState('')
-    const [errorpassword, setErrorPassword] = useState('')
-    const [errornip, setErrorNip] = useState('')
-    const [errorinstansi, setErrorInstansi] = useState('')
-    const [errorjabatan, setErrorJabatan] = useState('')
-    const [errorbidang, setErrorBidang] = useState('')
-    const [errorgolongan, setErrorGolongan] = useState('')
-    const [errorPangkat, setErrorPangkat] = useState('')
-    // const [errForm, setErrForm] = useState([])
-    const [ready, setReady] = useState(false)
-    const [show, setShow] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('');
-
-
-    const changeShowPassword = () => {
-        (showPassword == 'password') ? setShowPassword('text') : setShowPassword('password');
-    }
-
-    const history = useNavigate()
-
-    const setErrorForm = (err) => {
-        err.map(v => {
-            // console.log("val err", v)
-            if (v.param == "name") {
-                setErrorName(v.msg)
-            } else if (v.param == "email") {
-                setErrorEmail(v.msg)
-            } else if (v.param == "password") {
-                setErrorPassword(v.msg)
-            } else if (v.param == "repeatPassword") {
-                setErrorRepeatPassword(v.msg)
-            } else if (v.param == "nip") {
-                setErrorNip(v.msg)
-            } else if (v.param == "instansi") {
-                setErrorInstansi(v.msg)
-            } else if (v.param == "bidang") {
-                setErrorBidang(v.msg)
-            } else if (v.param == "jabatan") {
-                setErrorJabatan(v.msg)
-            } else if (v.param == "golongan") {
-                setErrorGolongan(v.msg)
-            } else if (v.param == "pangkat") {
-                setErrorPangkat(v.msg)
-            } else {
-                setErrorMessage(v.msg)
-            }
-        })
-    }
-
-    const submitForm = (e) => {
-
-        e.preventDefault();
-        const body = {
-            name: name.toLowerCase(),
-            email: email,
-            repeatPassword: repeatPassword,
-            nip: nip,
-            instansi: instansi,
-            jabatan: jabatan,
-            bidang: bidang,
-            golongan: golongan,
-            pangkat: pangkat,
-            password: password
-        }
-
-        const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/insert`;
-
-        Axios.post(urlapi, body).then(value => {
-            // console.log(body)
-            localStorage.setItem("message", "Pegawai Berhasil ditambah!");
-            localStorage.setItem("messageType", "success");
-            history("/pegawai")
-        }).catch(err => {
-            // console.log("err", err.response.data.data.data);
-            // setErrForm(err);
-            (err.response.data) ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-            if (err.response.data.data.errorStatus == 400) {
-                setErrorForm(err.response.data.data.data)
-            }
-            setReady(true)
-            setShow(true)
-        })
-
-        // console.log("body", body)
-
-    }
+const CreatePegawai = props => {
 
     return (
         <div>
@@ -115,49 +12,49 @@ const CreatePegawai = () => {
                     <Col md={{ span: 8, offset: 2 }} className='p-3' style={{ fontSize: "13px" }}>
                         <h4>Tambah Pegawai</h4>
                         <hr />
-                        {(!show ? '' :
-                            <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                        {(!props.show ? '' :
+                            <Alert variant="danger" onClose={() => props.setShow(false)} dismissible>
                                 <p>
-                                    {errorMessage}
+                                    {props.errorMessage}
                                 </p>
                             </Alert>
                         )}
-                        <Form onSubmit={submitForm}>
+                        <Form onSubmit={props.submitForm}>
                             <Row>
                                 <Col md="7">
                                     <Form.Group className="mb-1" controlId="name">
                                         <Form.Label>Nama</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} id="name" type="text" onChange={(e) => { setName(e.target.value) }} placeholder="Enter name" />
-                                        {(!errorname) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} id="name" type="text" onChange={(e) => { props.setName(e.target.value) }} placeholder="Enter name" />
+                                        {(!props.errorname) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorname}
+                                                {props.errorname}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="email">
                                         <Form.Label>Alamat Email</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} id="email" type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Enter email" />
-                                        {(!erroremail) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} id="email" type="email" onChange={(e) => { props.setEmail(e.target.value) }} placeholder="Enter email" />
+                                        {(!props.erroremail) ? '' :
                                             <Form.Text className="text-danger">
-                                                {erroremail}
+                                                {props.erroremail}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="email">
                                         <Form.Label>NIP</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { setNip(e.target.value) }} placeholder="Enter NIP" />
-                                        {(!errornip) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { props.setNip(e.target.value) }} placeholder="Enter NIP" />
+                                        {(!props.errornip) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errornip}
+                                                {props.errornip}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Instansi</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setInstansi(e.target.value) }} placeholder="Enter Instansi" />
-                                        {(!errorinstansi) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { props.setInstansi(e.target.value) }} placeholder="Enter Instansi" />
+                                        {(!props.errorinstansi) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorinstansi}
+                                                {props.errorinstansi}
                                             </Form.Text>
                                         }
                                     </Form.Group>
@@ -165,11 +62,11 @@ const CreatePegawai = () => {
                                         <Col md="6">
                                             <Form.Group className="mb-1" controlId="passwod">
                                                 <Form.Label>Password</Form.Label>
-                                                <Form.Control style={{ fontSize: "13px" }} type={showPassword} onChange={(e) => { setPassword(e.target.value) }} placeholder="Enter password" />
-                                                <Form.Check type='checkbox' label="Show Password" onChange={(e) => { changeShowPassword() }} checked={(showPassword == "text") ? true : false} />
-                                                {(!errorpassword) ? '' :
+                                                <Form.Control style={{ fontSize: "13px" }} type={props.showPassword} onChange={(e) => { props.setPassword(e.target.value) }} placeholder="Enter password" />
+                                                <Form.Check type='checkbox' label="Show Password" onChange={(e) => { props.changeShowPassword() }} checked={(props.showPassword == "text") ? true : false} />
+                                                {(!props.errorpassword) ? '' :
                                                     <Form.Text className="text-danger">
-                                                        {errorpassword}
+                                                        {props.errorpassword}
                                                     </Form.Text>
                                                 }
                                             </Form.Group>
@@ -177,11 +74,11 @@ const CreatePegawai = () => {
                                         <Col md="6">
                                             <Form.Group className="mb-1" controlId="formBasicEmail">
                                                 <Form.Label>Ulangi Password</Form.Label>
-                                                <Form.Control style={{ fontSize: "13px" }} type={showPassword} onChange={(e) => { setRepeatPassword(e.target.value) }} placeholder="Repeat Password" />
-                                                <Form.Check type='checkbox' label="Show Password" onChange={(e) => { changeShowPassword() }} checked={(showPassword == "text") ? true : false} />
-                                                {(!errorrepeatPassword) ? '' :
+                                                <Form.Control style={{ fontSize: "13px" }} type={props.showPassword} onChange={(e) => { props.setRepeatPassword(e.target.value) }} placeholder="Repeat Password" />
+                                                <Form.Check type='checkbox' label="Show Password" onChange={(e) => { props.changeShowPassword() }} checked={(props.showPassword == "text") ? true : false} />
+                                                {(!props.errorrepeatPassword) ? '' :
                                                     <Form.Text className="text-danger">
-                                                        {errorrepeatPassword}
+                                                        {props.errorrepeatPassword}
                                                     </Form.Text>
                                                 }
                                             </Form.Group>
@@ -191,42 +88,42 @@ const CreatePegawai = () => {
                                 <Col md="5">
                                     <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Jabatan</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setJabatan(e.target.value) }} placeholder="Enter Jabatan" />
-                                        {(!errorjabatan) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { props.setJabatan(e.target.value) }} placeholder="Enter Jabatan" />
+                                        {(!props.errorjabatan) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorjabatan}
+                                                {props.errorjabatan}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Bidang</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setBidang(e.target.value) }} placeholder="Enter Bidang" />
-                                        {(!errorbidang) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { props.setBidang(e.target.value) }} placeholder="Enter Bidang" />
+                                        {(!props.errorbidang) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorbidang}
+                                                {props.errorbidang}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="formBasicEmail">
                                         <Form.Label>Golongan</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { setGolongan(e.target.value) }} placeholder="Enter Golongan" />
-                                        {(!errorgolongan) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} type="text" onChange={(e) => { props.setGolongan(e.target.value) }} placeholder="Enter Golongan" />
+                                        {(!props.errorgolongan) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorgolongan}
+                                                {props.errorgolongan}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Form.Group className="mb-1" controlId="email">
                                         <Form.Label>Pangkat</Form.Label>
-                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { setPangkat(e.target.value) }} placeholder="Enter Pangkat" />
-                                        {(!errorPangkat) ? '' :
+                                        <Form.Control style={{ fontSize: "13px" }} id="nip" type="text" onChange={(e) => { props.setPangkat(e.target.value) }} placeholder="Enter Pangkat" />
+                                        {(!props.errorPangkat) ? '' :
                                             <Form.Text className="text-danger">
-                                                {errorPangkat}
+                                                {props.errorPangkat}
                                             </Form.Text>
                                         }
                                     </Form.Group>
                                     <Button type='submit' variant='success' className='float-end'><BsCheckCircle /> Simpan</Button>
-                                    <Button variant='danger' className='float-end' style={{ marginRight: 5 }} onClick={() => { history("/pegawai") }}><BsXCircle />  Batal</Button>
+                                    <Button variant='danger' className='float-end' style={{ marginRight: 5 }} onClick={() => { props.history("/pegawai") }}><BsXCircle />  Batal</Button>
                                 </Col>
                             </Row>
                         </Form>

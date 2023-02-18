@@ -1,152 +1,30 @@
-import React, { useState } from "react";
-
-import Moment from "moment-timezone";
+import React from "react";
 
 import { Alert, Button, Col, Container, Form, InputGroup, Modal, Row, Table, } from "react-bootstrap";
-import { BsEye, BsPencil, BsPlus, BsSearch, BsSortUp, BsTrash, BsUpload, } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { BsEye, BsPencil, BsPlus, BsSearch, BsSortDown, BsSortUp, BsTrash, BsUpload, } from "react-icons/bs";
 import Pagination from 'react-js-pagination'
-
-import Axios from "axios";
 import { LoaderCenter } from "../../_partials/loader";
 import moment from "moment-timezone";
 
-const Perjadin = () => {
-  const urlapi = process.env.REACT_APP_URL_PERJADIN;
-  const urlsppd = process.env.REACT_APP_URL_SPPD;
-
-  const [show, setShow] = useState(false);
-  const [idDelete, setIdDelete] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [ready, setReady] = useState(true);
-  const [data, setData] = useState([]);
-
-  const [datacount, setDataCount] = useState(1);
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-
-  const [message, setMessage] = useState('')
-  const [messageType, setMessageType] = useState('')
-  const isMessage = localStorage.message != null;
-  const messagevariant = localStorage.messageType != null;
-
-  const setAlert = () => {
-    if (isMessage) {
-      setMessage(isMessage)
-      setMessageType(messagevariant)
-      setShow(true)
-      localStorage.removeItem("message")
-      localStorage.removeItem("messageType")
-    }
-  }
-
-
-  const loadData = async () => {
-    setReady(false);
-    await Axios.get(`${urlapi}?page=${page}&perPage=${perPage}`)
-      .then((v) => {
-        // console.log("value", v.data.data)
-        setData(v.data.data);
-        setReady(true);
-      })
-      .catch((err) => {
-        // console.log(err)
-        catchErr(err)
-      });
-  };
-
-  const catchErr = (err) => {
-    err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-    setReady(true);
-    setShow(true);
-  }
-
-  const getDataCount = async () => {
-    await Axios.get(`${urlapi}`)
-      .then((v) => {
-        setDataCount(v.data.data.length);
-      })
-      .catch((err) => {
-        catchErr(err)
-      });
-  };
-
-  const handlePageChange = (pageNumber) => {
-    // console.log(`active page is ${pageNumber}`);
-    setPage(pageNumber);
-  };
-
-  const handleCloseModal = () => {
-    setIdDelete("");
-    setShowModal(false);
-  };
-  const handleShowModal = (id) => {
-    setIdDelete(id);
-    setShowModal(true);
-  };
-
-  const deleteData = (id) => {
-    Axios.delete(`${urlapi}/${id}`)
-      .then((v) => {
-        handleCloseModal();
-        loadData();
-      })
-      .catch((err) => {
-        catchErr(err)
-      });
-  };
-
-  const getSPPD = (id) => {
-    Axios.get(`${urlsppd}/${id}`).then(v => { return v }).catch(err => catchErr(err))
-  }
-
-  const handlerPerPage = (value) => {
-    setPerPage(parseInt(value, 10));
-    setPage(1);
-  };
-
-  const header = [
-    "Perihal",
-    "Lokasi",
-    "Berangkat",
-    "Lama Perjalanan",
-    "Jenis Perjalanan",
-    "Tahun",
-    "SPPD",
-    "SPT",
-    "Foto Kegiatan",
-  ];
-
-  const history = useNavigate();
-  const path = window.location.pathname;
-  const pathCreate = path + "/create";
-  const title = "Perjalanan Dinas";
-
-  React.useEffect(() => {
-    setAlert()
-    loadData();
-    getDataCount();
-  }, [page, perPage]);
-
+const Perjadin = props => {
   return (
     <div>
       <Container fluid>
         <Row>
           <Col md={{ span: 10, offset: 1 }} className="p-3">
-            {!show ? ("") : (
-              <Alert variant="danger" onClose={() => setShow(false)} key="alert" dismissible >
-                <p>{errorMessage}</p>
+            {!props.show ? ("") : (
+              <Alert variant="danger" onClose={() => props.setShow(false)} key="alert" dismissible >
+                <p>{props.errorMessage}</p>
               </Alert>
             )}
-            <Button size="sm" className="float-end btn btn-primary" onClick={() => { history(pathCreate); }}>
-              {" "} <BsPlus /> Tambah {title}
+            <Button size="sm" className="float-end btn btn-primary" onClick={() => { props.history(props.pathCreate); }}>
+              {" "} <BsPlus /> Tambah {props.title}
             </Button>
-            <h4><b>Halaman {title}</b></h4>
+            <h4><b>Halaman {props.title}</b></h4>
             <hr className="mt-3" />
             <Row>
               <Col xs="3" md="1">
-                <Form.Select aria-label="Default select example" onChange={(e) => { handlerPerPage(e.target.value); }} style={{ fontSize: "12px" }}  >
+                <Form.Select aria-label="Default select example" onChange={(e) => { props.handlerPerPage(e.target.value); }} style={{ fontSize: "12px" }}  >
                   <option value="10">10</option>
                   <option value="1">1</option>
                   <option value="5">5</option>
@@ -156,7 +34,13 @@ const Perjadin = () => {
               </Col>
               <Col md={{ span: 5, offset: 6 }} xs="9">
                 <InputGroup className="mb-3">
-                  <Form.Control placeholder="Search Data" aria-label="Search Data" aria-describedby="basic-addon2" />
+                  <Form.Control
+                    style={{ fontSize: "12px" }}
+                    value={props.search}
+                    onChange={(e) => { props.searchHandle(e.target.value) }}
+                    placeholder="Search Data"
+                    aria-label="Search Data"
+                    aria-describedby="basic-addon2" />
                   <Button variant="outline-secondary" id="button-addon2">
                     <BsSearch /> Search
                   </Button>
@@ -169,20 +53,14 @@ const Perjadin = () => {
                   <thead>
                     <tr>
                       {/* <th>#</th> */}
-                      {header.map((v) => {
-                        return (
-                          <th key={v}>
-                            <center>
-                              {" "} {v} <i className="float-end text-secondary">  <BsSortUp />   </i>{" "}
-                            </center>
-                          </th>
-                        );
+                      {props.header.map(v => {
+                        return <th key={v} style={{ textTransform: "capitalize" }}><center> {v}<i className='float-end text-secondary'>{(props.sortval == "asc") ? <BsSortUp className={(v == props.sort) ? "text-black" : ''} onClick={() => props.sortHandle(v)} /> : <BsSortDown className={(v == props.sort) ? "text-black" : ''} onClick={() => props.sortHandle(v)} />}</i> </center></th>
                       })}
-                      <th key="action"> <center> Action <i className="float-end text-secondary"> <BsSortUp /> </i></center></th>
+                      <th><center>Action</center></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {!ready ? (
+                    {!props.ready ? (
                       <tr>
                         <td colSpan={11}>
                           <center>
@@ -191,7 +69,7 @@ const Perjadin = () => {
                         </td>
                       </tr>
                     ) : (
-                      data.map((v, index) => {
+                      props.data.map((v, index) => {
                         const berangkat = moment(v.tanggal_berangkat);
                         const kembali = moment(v.tanggal_kembali);
                         const lama = kembali.diff(berangkat);
@@ -222,13 +100,13 @@ const Perjadin = () => {
                             </td>
                             <td key={jenis_perjadinKey}>{v.jenis_perjadin}</td>
                             <td key={tahunKey}>{v.tahun}</td>
-                            <td key={ssppdLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/sppd/create/${v._id}`)}><BsPlus />Buat </a></td>
-                            <td key={sptLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/spt/create/${v._id}`)}><BsPlus />Buat </a></td>
-                            <td key={imageLinkKey} style={{ width: "10%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => history(`/image/create/${v._id}`)}><BsPlus />Upload </a></td>
+                            <td key={ssppdLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/sppd/create/${v._id}`)}><BsPlus />Buat </a></td>
+                            <td key={sptLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/spt/create/${v._id}`)}><BsPlus />Buat </a></td>
+                            <td key={imageLinkKey} style={{ width: "10%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/image/create/${v._id}`)}><BsPlus />Upload </a></td>
                             <td key={actionKey} style={{ width: "18%", paddingLeft: 20, paddingRight: 20, }}  >
                               <Row>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
-                                  <Button variant="primary" size="sm" className="m-1" style={{ fontSize: "12px" }} onClick={() => { history(`/perjadin/${v._id}`); }} aria-label="Detail" >
+                                  <Button variant="primary" size="sm" className="m-1" style={{ fontSize: "12px" }} onClick={() => { props.history(`/perjadin/${v._id}`); }} aria-label="Detail" >
                                     <BsEye /> Detail
                                   </Button>
                                 </Col>
@@ -238,7 +116,7 @@ const Perjadin = () => {
                                   style={{ padding: 0 }}
                                 >
                                   <Button variant="warning" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Edit" onClick={() => {
-                                    history(`/perjadin/edit/${v._id}`);
+                                    props.history(`/perjadin/edit/${v._id}`);
                                   }}
                                   >
                                     <BsPencil /> Edit
@@ -247,7 +125,7 @@ const Perjadin = () => {
                               </Row>
                               <Row>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }} >
-                                  <Button variant="danger" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Delete" onClick={() => handleShowModal(v._id)} >
+                                  <Button variant="danger" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Delete" onClick={() => props.handleShowModal(v._id)} >
                                     <BsTrash /> Delete
                                   </Button>
                                 </Col>
@@ -268,12 +146,12 @@ const Perjadin = () => {
                     innerClass="pagination"
                     itemClass="page-item"
                     linkClass="page-link"
-                    activePage={page}
-                    itemsCountPerPage={perPage}
-                    totalItemsCount={datacount}
+                    activePage={props.page}
+                    itemsCountPerPage={props.perPage}
+                    totalItemsCount={props.datacount}
                     pageRangeDisplayed={5}
                     onChange={(e) => {
-                      handlePageChange(e);
+                      props.handlePageChange(e);
                     }}
                   />
                 </div>
@@ -283,19 +161,19 @@ const Perjadin = () => {
         </Row>
       </Container>
 
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={props.showModal} onHide={props.handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Konfirmasi delete ?</Modal.Title>
         </Modal.Header>
         <Modal.Body>Apakah anda ingin Menghapus Data Pegawai ?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={props.handleCloseModal}>
             Batal
           </Button>
           <Button
             variant="primary"
             onClick={() => {
-              deleteData(idDelete);
+              props.deleteData(props.idDelete);
             }}
           >
             Delete
