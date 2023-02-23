@@ -8,7 +8,7 @@ import {
   Row,
   Table,
 } from "react-bootstrap";
-import imgProfile from "../../../image/jr.jpg";
+import imgProfile from "../../../image/user.png";
 import { BsArrowBarLeft, BsPencil } from "react-icons/bs";
 import { LoaderCenter } from "../../_partials/loader";
 

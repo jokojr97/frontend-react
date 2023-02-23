@@ -188,6 +188,7 @@ const ControllerEditPegawai = () => {
                 bidang={bidang}
                 golongan={golongan}
                 pangkat={pangkat}
+                errorname={errorname}
                 erroremail={erroremail}
                 errorrepeatPassword={errorrepeatPassword}
                 errorpassword={errorpassword}

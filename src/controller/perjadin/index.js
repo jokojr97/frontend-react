@@ -114,12 +114,12 @@ const ControllerPerjadin = () => {
     };
 
     const header = [
-        "Perihal",
-        "Lokasi",
-        "Berangkat",
-        "Lama Perjalanan",
-        "Jenis Perjalanan",
-        "Tahun",
+        "perihal",
+        "lokasi",
+        "berangkat",
+        "lama perjalanan",
+        "jenis perjalanan",
+        "tahun",
         "SPPD",
         "SPT",
         "Foto Kegiatan",

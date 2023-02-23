@@ -91,7 +91,7 @@ const ControllerCreatePegawai = () => {
         const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/insert`;
 
         Axios.post(urlapi, body).then(value => {
-            // console.log(body)
+            console.log(body)
             localStorage.setItem("message", "Pegawai Berhasil ditambah!");
             localStorage.setItem("messageType", "success");
             history("/pegawai")
@@ -106,7 +106,7 @@ const ControllerCreatePegawai = () => {
             setShow(true)
         })
 
-        // console.log("body", body)
+        console.log("body", body)
 
     }
 
@@ -117,7 +117,7 @@ const ControllerCreatePegawai = () => {
                 setShow={setShow}
                 errorMessage={errorMessage}
                 submitForm={submitForm}
-                name={name}
+                errorname={errorname}
                 erroremail={erroremail}
                 errorrepeatPassword={errorrepeatPassword}
                 errorpassword={errorpassword}
@@ -129,6 +129,7 @@ const ControllerCreatePegawai = () => {
                 errorPangkat={errorPangkat}
                 ready={ready}
                 history={history}
+                setName={setName}
                 setEmail={setEmail}
                 setRepeatPassword={setRepeatPassword}
                 setPangkat={setPangkat}

@@ -5,6 +5,9 @@ import { LoaderCenter } from '../../_partials/loader'
 import Pagination from 'react-js-pagination'
 
 const Pegawai = props => {
+    const pathname = process.env.REACT_APP_URL_PEGAWAI
+    const urlexcel = pathname.replace("/v1/pegawai", '')
+    console.log("url", urlexcel)
 
     return (
         <div>
@@ -21,7 +24,7 @@ const Pegawai = props => {
                         )}
                         <Button size="sm" className='float-end btn btn-primary' style={{ marginRight: "5px" }} onClick={() => { props.history(props.pathCreate) }}> <BsPlus /> Tambah {props.title}</Button>
                         <Button size="sm" className='float-end btn btn-success' style={{ marginRight: "5px" }} onClick={() => { props.history(props.pathCreate) }}> <BsUpload /> Import {props.title}</Button>
-                        <Button size="sm" className='float-end btn btn-danger' style={{ marginRight: "5px" }} onClick={() => { props.history(props.pathCreate) }}> <BsDownload /> Download Template {props.title}</Button>
+                        <Button size="sm" className='float-end btn btn-danger' style={{ marginRight: "5px" }}><a target="_blank" href={`${urlexcel}/excel/base_data_pegawai.xlsx`} style={{ color: "white", textDecoration: "none" }}><BsDownload /> Download Template {props.title}</a></Button>
                         <h4><b>Halaman {props.title}</b></h4>
                         <hr className='mt-3' />
                         <Row>
@@ -81,24 +84,11 @@ const Pegawai = props => {
                                                             <td style={{ textTransform: "capitalize" }} key={bidangKey}>{v.bidang}</td>
                                                             <td style={{ textTransform: "capitalize" }} key={jabatanKey}>{v.jabatan}</td>
                                                             <td style={{ textTransform: "capitalize" }} key={golonganKey}>{v.golongan}</td>
-                                                            <td key={actionKey} style={{ width: "20%", paddingLeft: 20, paddingRight: 20 }}>
-                                                                <Row>
-                                                                    <Col md="6" className='d-grid' style={{ padding: 0 }}>
-                                                                        <Button style={{ fontSize: "12px" }} variant='primary' size='sm' className='m-1' onClick={() => { props.history(`/pegawai/${v._id}`) }} aria-label='Detail'><BsEye /> Detail</Button>
-                                                                    </Col>
-                                                                    <Col md="6" className='d-grid m-0' style={{ padding: 0 }}>
-                                                                        <Button style={{ fontSize: "12px" }} variant='warning' size='sm' className='m-1' aria-label='Edit' onClick={() => { props.history(`/pegawai/edit/${v._id}`) }} ><BsPencil /> Edit</Button>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col md="6" className='d-grid' style={{ padding: 0 }}>
-
-                                                                        <Button style={{ fontSize: "12px" }} variant='danger' size='sm' className='m-1' aria-label='Delete' onClick={() => props.handleShowModal(v._id)}><BsTrash /> Delete</Button>
-                                                                    </Col>
-                                                                    <Col md="6" className='d-grid' style={{ padding: 0 }}>
-                                                                        <Button style={{ fontSize: "12px" }} variant='success' size='sm' className='m-1' aria-label='Upload'><BsUpload /> Upload</Button>
-                                                                    </Col>
-                                                                </Row>
+                                                            <td key={actionKey} style={{ width: "25%", paddingLeft: 20, paddingRight: 20 }}>
+                                                                <Button style={{ fontSize: "12px" }} variant='primary' size='sm' className='m-1' onClick={() => { props.history(`/pegawai/${v._id}`) }} aria-label='Detail'><BsEye /> Detail</Button>
+                                                                <Button style={{ fontSize: "12px" }} variant='warning' size='sm' className='m-1' aria-label='Edit' onClick={() => { props.history(`/pegawai/edit/${v._id}`) }} ><BsPencil /> Edit</Button>
+                                                                <Button style={{ fontSize: "12px" }} variant='danger' size='sm' className='m-1' aria-label='Delete' onClick={() => props.handleShowModal(v._id)}><BsTrash /> Delete</Button>
+                                                                {/* <Button style={{ fontSize: "12px" }} variant='success' size='sm' className='m-1' aria-label='Upload'><BsUpload /> Upload</Button> */}
                                                             </td>
                                                         </tr>
                                                     )
