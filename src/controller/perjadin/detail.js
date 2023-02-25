@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import DetailPerjadin from "../../page/admin/perjadin/detail";
 
 const ControllerDetailPerjadin = () => {
-
     const urlapi = process.env.REACT_APP_URL_PERJADIN;
     const pathname = window.location.pathname;
     const idPegawai = pathname.replace("/perjadin/", "");
@@ -41,7 +40,13 @@ const ControllerDetailPerjadin = () => {
 
     return (
         <div>
-            <DetailPerjadin />
+            <DetailPerjadin
+                data={data}
+                show={show}
+                setShow={setShow}
+                errorMessage={errorMessage}
+                ready={ready}
+            />
         </div>
     )
 }
