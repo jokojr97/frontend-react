@@ -7,6 +7,7 @@ const ControllerPegawai = () => {
   const [data, setData] = useState([]);
   const [idDelete, setIdDelete] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [showModalUpload, setShowModalUpload] = useState(false)
   const [show, setShow] = useState(false)
   const [errorMessage, setErrorMessage] = useState('');
   const [ready, setReady] = useState(true);
@@ -18,6 +19,7 @@ const ControllerPegawai = () => {
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
 
+  const [fileExcel, setFileExcel] = useState('')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
   const isMessage = localStorage.message != null;
@@ -81,12 +83,17 @@ const ControllerPegawai = () => {
   const handleCloseModal = () => {
     setIdDelete('')
     setShowModal(false)
-
+    setShowModalUpload(false)
   };
   const handleShowModal = (id) => {
     setIdDelete(id)
     setShowModal(true);
   }
+
+  const handleShowModalUpload = (id) => {
+    setShowModalUpload(true);
+  }
+
 
   const deletePegawai = (id) => {
     // console.log("id", id)
@@ -118,6 +125,23 @@ const ControllerPegawai = () => {
       setSortval("asc")
       setSort(v)
     }
+  }
+
+  const importHandle = (e) => {
+    e.preventDefault();
+    const fileexcels = fileExcel.files[0]
+    const urlpath = URL.createObjectURL(fileexcels)
+    let data = new FormData();
+    data.append('excel', fileexcels)
+
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' }
+    }
+
+    Axios.post(`${process.env.REACT_APP_URL_PEGAWAI}/excel/import`, data, config).then(val => {
+      console.log("val:", val)
+      setShowModalUpload(false)
+    }).catch(err => console.log("error: ", err))
   }
 
   React.useEffect(() => {
@@ -156,7 +180,10 @@ const ControllerPegawai = () => {
         handleCloseModal={handleCloseModal}
         deletePegawai={deletePegawai}
         idDelete={idDelete}
-
+        showModalUpload={showModalUpload}
+        handleShowModalUpload={handleShowModalUpload}
+        importHandle={importHandle}
+        setFileExcel={setFileExcel}
       />
 
     </div>

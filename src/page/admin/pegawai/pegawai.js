@@ -7,7 +7,7 @@ import Pagination from 'react-js-pagination'
 const Pegawai = props => {
     const pathname = process.env.REACT_APP_URL_PEGAWAI
     const urlexcel = pathname.replace("/v1/pegawai", '')
-    console.log("url", urlexcel)
+    // console.log("url", urlexcel)
 
     return (
         <div>
@@ -23,7 +23,7 @@ const Pegawai = props => {
                             </Alert>
                         )}
                         <Button size="sm" className='float-end btn btn-primary' style={{ marginRight: "5px" }} onClick={() => { props.history(props.pathCreate) }}> <BsPlus /> Tambah {props.title}</Button>
-                        <Button size="sm" className='float-end btn btn-success' style={{ marginRight: "5px" }} onClick={() => { props.history(props.pathCreate) }}> <BsUpload /> Import {props.title}</Button>
+                        <Button size="sm" className='float-end btn btn-success' style={{ marginRight: "5px" }} onClick={() => { props.handleShowModalUpload() }}> <BsUpload /> Import {props.title}</Button>
                         <Button size="sm" className='float-end btn btn-danger' style={{ marginRight: "5px" }}><a target="_blank" href={`${urlexcel}/excel/base_data_pegawai.xlsx`} style={{ color: "white", textDecoration: "none" }}><BsDownload /> Download Template {props.title}</a></Button>
                         <h4><b>Halaman {props.title}</b></h4>
                         <hr className='mt-3' />
@@ -116,6 +116,34 @@ const Pegawai = props => {
                     </Col>
                 </Row>
             </Container >
+
+            <Modal show={props.showModalUpload} onHide={props.handleCloseModal}>
+                <Form onSubmit={props.importHandle}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Upload Data Pegawai</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <Form.Group className="mb-1">
+                            <Form.Label>Import Pegawai</Form.Label>
+                            <Form.Control style={{ fontSize: "13px" }} name="excel" id="excel" type="file" onChange={(e) => { props.setFileExcel(e.target) }} placeholder="Enter name" />
+                            {(!props.errorname) ? '' :
+                                <Form.Text className="text-danger">
+                                    {props.errorname}
+                                </Form.Text>
+                            }
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={props.handleCloseModal}>
+                            Batal
+                        </Button>
+                        <Button variant="primary" type='submit'>
+                            Import
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
 
             <Modal show={props.showModal} onHide={props.handleCloseModal}>
                 <Modal.Header closeButton>
