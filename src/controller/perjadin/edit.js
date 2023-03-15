@@ -5,7 +5,7 @@ import EditPerjadin from '../../page/admin/perjadin/edit'
 
 const ControllerEditPerjadin = () => {
 
-    const urlapi = `${process.env.REACT_APP_URL_PERJADIN}/edit`
+    const urlapi = `${process.env.REACT_APP_URL_PERJADIN}/update`
     const pathname = useLocation().pathname
     const idPerjadin = pathname.replace("/perjadin/edit/", '')
     const urldata = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`
@@ -71,6 +71,7 @@ const ControllerEditPerjadin = () => {
     const submitForm = (e) => {
         e.preventDefault();
         const body = {
+            _id: idPerjadin,
             perihal: perihal,
             lokasi: lokasi,
             alamat: alamat,
@@ -79,7 +80,7 @@ const ControllerEditPerjadin = () => {
             tahun: tahun,
             jenis_perjadin: jenisPerjalanan
         }
-        Axios.post(urlapi, body).then(v => {
+        Axios.patch(urlapi, body).then(v => {
             history("/perjadin")
         }).catch(err => catchErr(err))
         // console.log("body", body);
@@ -93,6 +94,7 @@ const ControllerEditPerjadin = () => {
             setReady(true)
         }).catch(err => catchErr(err))
     }
+    
 
     const setFormData = (values) => {
         setPerihal(values.perihal)

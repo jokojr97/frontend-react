@@ -47,6 +47,7 @@ import ControllerDetailPerjadin from "./controller/perjadin/detail";
 import ControllerCreatePerjadin from "./controller/perjadin/create";
 import ControllerEditPerjadin from "./controller/perjadin/edit";
 import ControllerImportPegawai from "./controller/pegawai/import";
+import ControllerCreateSppd from "./controller/sppd/create";
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -79,7 +80,7 @@ function App() {
               <Route path="/spt/:idSpt" exact element={<DetailSpt />} />
               <Route path="/spt/edit/:idSpt" exact element={<EditSpt />} />
               <Route path="/sppd" exact element={<Sppd />} />
-              <Route path="/sppd/create/:idPerjadin" exact element={<CreateSppd />} />
+              <Route path="/sppd/create/:idPerjadin" exact element={<ControllerCreateSppd />} />
               <Route path="/sppd/:idSppd" exact element={<DetailSppd />} />
               <Route path="/sppd/edit/:idSppd" exact element={<EditSppd />} />
               <Route path="/laporan" exact element={<Laporan />} />
