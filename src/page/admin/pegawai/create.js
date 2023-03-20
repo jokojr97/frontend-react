@@ -9,7 +9,7 @@ const CreatePegawai = props => {
         <div>
             <Container fluid>
                 <Row>
-                    <Col md={{ span: 8, offset: 2 }} className='p-3' style={{ fontSize: "13px" }}>
+                    <Col md={{ span: 10, offset: 1 }} className='p-3' style={{ fontSize: "13px" }}>
                         <h4>Tambah Pegawai</h4>
                         <hr />
                         {(!props.show ? '' :

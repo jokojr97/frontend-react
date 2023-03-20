@@ -18,13 +18,16 @@ const DefaultRoute = props => {
     // const path = window.location.pathname
 
     return isLogin ? !ready ? <LoaderCenter size="lg" /> : <div>
-     {/* <NavMenu />  */}
-     
-    {/* <div id="wrapper"> */}
-     <div style={{ marginBottom: "40px" }} className="bg-light" >
-        <Dashboard />
-    {/* </div> */}
-     </div> <Footr /> </div> : <Navigate to="/login" />;
+        <NavMenu />
+
+        {/* <div id="wrapper"> */}
+        <div style={{ marginBottom: "40px" }} className="bg-light" >
+            {/* <NavbarAdmin /> */}
+            <Dashboard>
+                <Outlet />
+            </Dashboard>
+            {/* </div> */}
+        </div> <Footr /> </div> : <Navigate to="/login" />;
 }
 
 export default DefaultRoute

@@ -18,7 +18,7 @@ const DetailPegawai = props => {
     <div>
       <Container>
         <Row>
-          <Col md={{ span: 10, offset: 1 }}>
+          <Col>
             {(!props.ready) ? <center><LoaderCenter text=" sedang memuat..." /></center> :
               !props.show ? (
                 ""

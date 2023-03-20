@@ -14,7 +14,7 @@ const Pegawai = props => {
             {/* {console.log("data", props.data)} */}
             <Container fluid>
                 <Row>
-                    <Col md={{ span: 10, offset: 1 }} className='p-3'>
+                    <Col className='p-3'>
                         {(!props.show ? '' :
                             <Alert variant={props.messageType} onClose={() => props.setShow(false)} dismissible>
                                 <p>

@@ -11,7 +11,7 @@ const Perjadin = props => {
     <div>
       <Container fluid>
         <Row>
-          <Col md={{ span: 10, offset: 1 }} className="p-3">
+          <Col className="p-3">
             {!props.show ? ("") : (
               <Alert variant="danger" onClose={() => props.setShow(false)} key="alert" dismissible >
                 <p>{props.errorMessage}</p>

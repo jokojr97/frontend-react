@@ -12,6 +12,7 @@ import {
     MDBCheckbox
 }
     from 'mdb-react-ui-kit';
+import LogoBjn from '../../image/Logo_Kabupaten_Bojonegoro.png'
 
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
@@ -73,14 +74,14 @@ const Login = props => {
     return <div> {
         <Container>
             <Row style={{ margin: 0, position: "absolute", top: "20%" }}>
-                <Col md={{ span: 8, offset: 2 }}>
+                <Col md={{ span: 8, offset: 1 }}>
 
                     <Container fluid>
                         <MDBCard>
                             <MDBRow className='g-0 d-flex align-items-center p-3'>
 
-                                <MDBCol md='4'>
-                                    <MDBCardImage src='https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg' alt='phone' className='rounded-t-5 rounded-tr-lg-0' fluid />
+                                <MDBCol md='4' style={{ padding: 40 }}>
+                                    <MDBCardImage src={LogoBjn} alt='phone' className='rounded-t-5 rounded-tr-lg-0' fluid />
                                 </MDBCol>
 
                                 <MDBCol md='8'>

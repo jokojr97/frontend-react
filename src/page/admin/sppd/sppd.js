@@ -119,7 +119,7 @@ const Sppd = () => {
         <div>
             <Container className='p-3'>
                 <Row>
-                    <Col md={{ span: 10, offset: 1 }} className="p-3">
+                    <Col className="p-3">
                         {!show ? ("") : (
                             <Alert variant="danger" onClose={() => setShow(false)} key="alert" dismissible >
                                 <p>{errorMessage}</p>
