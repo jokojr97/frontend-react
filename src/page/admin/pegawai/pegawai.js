@@ -84,7 +84,7 @@ const Pegawai = props => {
                                                             <td style={{ textTransform: "capitalize" }} key={bidangKey}>{v.bidang}</td>
                                                             <td style={{ textTransform: "capitalize" }} key={jabatanKey}>{v.jabatan}</td>
                                                             <td style={{ textTransform: "capitalize" }} key={golonganKey}>{v.golongan}</td>
-                                                            <td key={actionKey} style={{ width: "25%", paddingLeft: 20, paddingRight: 20 }}>
+                                                            <td key={actionKey} style={{ width: "30%", paddingLeft: 20, paddingRight: 20 }}>
                                                                 <Button style={{ fontSize: "12px" }} variant='primary' size='sm' className='m-1' onClick={() => { props.history(`/pegawai/${v._id}`) }} aria-label='Detail'><BsEye /> Detail</Button>
                                                                 <Button style={{ fontSize: "12px" }} variant='warning' size='sm' className='m-1' aria-label='Edit' onClick={() => { props.history(`/pegawai/edit/${v._id}`) }} ><BsPencil /> Edit</Button>
                                                                 <Button style={{ fontSize: "12px" }} variant='danger' size='sm' className='m-1' aria-label='Delete' onClick={() => props.handleShowModal(v._id)}><BsTrash /> Delete</Button>

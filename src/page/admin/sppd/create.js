@@ -31,7 +31,7 @@ const CreateSppd = props => {
                 <Row>
                   <Col style={{ paddingRight: "5px" }} xs="4">
                     <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                      <Form.Label className="mb-1">Tgl Berangkat</Form.Label>
+                      <Form.Label className="mb-1">Tanggal Berangkat</Form.Label>
                       <Form.Control style={{ fontSize: "13px" }} id="tanggalBerangkat" type="text" value={props.tanggalBerangkat} onChange={(e) => { props.setTanggalBerangkat(e.target.value) }} disabled />
                       {(!props.errorTanggalKembali) ? '' :
                         <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -42,7 +42,7 @@ const CreateSppd = props => {
                   </Col>
                   <Col style={{ paddingLeft: "5px", paddingRight: "5px" }} xs="4">
                     <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                      <Form.Label className="mb-1">Tgl Kembali</Form.Label>
+                      <Form.Label className="mb-1">Tanggal Kembali</Form.Label>
                       <Form.Control style={{ fontSize: "13px" }} id="tanggalKembali" type="text" value={props.tanggalKembali} onChange={(e) => { props.setTanggalKembali(e.target.value) }} disabled />
                       {(!props.errorTanggalKembali) ? '' :
                         <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -72,7 +72,7 @@ const CreateSppd = props => {
                     </Form.Text>
                   }
                 </Form.Group>
-                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                {/* <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Tempat Tujuan</Form.Label>
                   <Form.Control style={{ fontSize: "13px" }} id="tempatTujuan" type="text" value={props.tempatTujuan} onChange={(e) => { props.setTempatTujuan(e.target.value) }} placeholder="Masukkan Tempat Tujuan" disabled />
                   {(!props.errorTempatBernagkat) ? '' :
@@ -80,7 +80,7 @@ const CreateSppd = props => {
                       {props.errorTempatBernagkat}
                     </Form.Text>
                   }
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Tahun</Form.Label>
                   <Form.Control style={{ fontSize: "13px" }} id="tahun" type="text" value={props.tahun} onChange={(e) => { props.setTempatTujuan(e.target.value) }} placeholder="Masukkan Tempat Tujuan" disabled />

@@ -29,6 +29,7 @@ const ControllerDetailPerjadin = () => {
                 setShow(true);
             });
     };
+
     const history = useNavigate();
 
     React.useEffect(() => {
@@ -43,6 +44,7 @@ const ControllerDetailPerjadin = () => {
             <DetailPerjadin
                 data={data}
                 show={show}
+                history={history}
                 setShow={setShow}
                 errorMessage={errorMessage}
                 ready={ready}

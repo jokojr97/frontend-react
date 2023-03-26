@@ -27,7 +27,7 @@ const DefaultRoute = props => {
                 <Outlet />
             </Dashboard>
             {/* </div> */}
-        </div> <Footr /> </div> : <Navigate to="/login" />;
+        </div> </div> : <Navigate to="/login" />;
 }
 
 export default DefaultRoute

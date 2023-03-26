@@ -7,7 +7,7 @@ const Dashboard = () => {
         <div>
             <div id="layoutSidenav">
                 <div id="layoutSidenav_nav">
-                    <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <nav className="sb-sidenav accordion sb-sidenav-light bg-white text-black" id="sidenavAccordion">
                         <div className="sb-sidenav-menu">
                             <div className="nav">
                                 <div className="sb-sidenav-menu-heading">Core</div>
@@ -28,10 +28,10 @@ const Dashboard = () => {
                                     <div className="sb-nav-link-icon"><i className="fa fa-file"></i></div>
                                     SPPD
                                 </a>
-                                <a className="nav-link" onClick={() => navigate("/laporan")} style={{ cursor: "pointer" }}>
+                                {/* <a className="nav-link" onClick={() => navigate("/laporan")} style={{ cursor: "pointer" }}>
                                     <div className="sb-nav-link-icon"><i className="fas fa-flag"></i></div>
                                     Laporan
-                                </a>
+                                </a> */}
                                 <a className="nav-link" onClick={() => navigate("/kwitansi")} style={{ cursor: "pointer" }}>
                                     <div className="sb-nav-link-icon"><i className="fa fa-sticky-note"></i></div>
                                     Kwiitansi
@@ -48,18 +48,18 @@ const Dashboard = () => {
                         </div>
                     </nav>
                 </div>
-                <div id="layoutSidenav_content">
+                <div id="layoutSidenav_content" style={{ backgroundColor: "#ebf8f1", padding: "5px 20px" }}>
                     <main>
                         <Outlet />
                     </main>
-                    <footer className="py-4 bg-light mt-auto">
+                    <footer className="py-3 bg-white mt-auto" >
                         <div className="container-fluid px-4">
                             <div className="d-flex align-items-center justify-content-between small">
-                                <div className="text-muted">Copyright &copy; Your Website 2022</div>
+                                <div className="text-muted">Copyright &copy; Pemkab Bojonegoro 2022</div>
                                 <div>
-                                    <a href="#">Privacy Policy</a>
+                                    <a href="#" style={{ color: "gray", textDecoration: "none" }}>Privacy Policy</a>
                                     &middot;
-                                    <a href="#">Terms &amp; Conditions</a>
+                                    <a href="#" style={{ color: "gray", textDecoration: "none" }}>Terms &amp; Conditions</a>
                                 </div>
                             </div>
                         </div>

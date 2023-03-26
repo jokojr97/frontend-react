@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../index.css';
+import '../../index.scss';
 import { Button, Container, Modal, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -16,7 +16,6 @@ const NavMenu = props => {
         localStorage.clear();
         handleCloseModal();
         setLogout(true);
-
     }
     const navigate = useNavigate();
 
@@ -30,13 +29,14 @@ const NavMenu = props => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto"></Nav>
                         <Nav defaultActiveKey={props.activeKey}>
-                            <Nav.Link onClick={() => navigate("/")} active={props.activeKey == "/"}>Dashboard</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/perjadin")} active={props.activeKey == "/perjadin"}>Perjalanan Dinas</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/spt")} active={props.activeKey == "/spt"}>SPT</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/sppd")} active={props.activeKey == "/sppd"}>SPPD</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/laporan")} active={props.activeKey == "/laporan"}>Laporan</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/kwitansi")} active={props.activeKey == "/kwitansi"}>Kwitansi</Nav.Link>
-                            <Nav.Link onClick={() => navigate("/pegawai")} active={props.activeKey == "/pegawai"}>Pegawai</Nav.Link>
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/")} active={props.activeKey == "/"}>Dashboard</Nav.Link>
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/perjadin")} active={props.activeKey == "/perjadin"}>Perjalanan Dinas</Nav.Link>
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/spt")} active={props.activeKey == "/spt"}>SPT</Nav.Link>
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/sppd")} active={props.activeKey == "/sppd"}>SPPD</Nav.Link>
+                            {/* <Nav.Link className="navbar-atas" onClick={() => navigate("/laporan")} active={props.activeKey == "/laporan"}>Laporan</Nav.Link> */}
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/kwitansi")} active={props.activeKey == "/kwitansi"}>Kwitansi</Nav.Link>
+                            <Nav.Link className="navbar-atas" onClick={() => navigate("/pegawai")} active={props.activeKey == "/pegawai"}>Pegawai</Nav.Link>
+
                             <Nav.Link onClick={handleShowModal}><Button variant="outline-light" size="sm">Logout!</Button> </Nav.Link>
                             {/* <NavDropdown title="About Me" id="collasible-nav-dropdown" variant="dark">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

@@ -45,25 +45,30 @@ const Sppd = () => {
                 setData(v.data.data);
                 setReady(true);
             })
-            .catch((err) => {
-                // console.log(err)
-                err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-                setReady(true);
-                setShow(true);
-            });
+            .catch((err) => { catchErr(err) });
     };
+
+    const catchErr = (err) => {
+        // console.log(err)
+        err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
+        setReady(true);
+        setShow(true);
+    }
 
     const getDataCount = async () => {
         await Axios.get(`${urlapi}`)
             .then((v) => {
                 setDataCount(v.data.data.length);
             })
-            .catch((err) => {
-                err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-                setReady(true);
-                setShow(true);
-            });
+            .catch((err) => { catchErr(err) });
     };
+
+    const deleteProcess = (id) => {
+        Axios.delete(`${process.env.REACT_APP_URL_SPPD}/${id}`).then(v => {
+            handleCloseModal()
+            loadData()
+        }).catch(err => { catchErr(err) })
+    }
 
     const handlePageChange = (pageNumber) => {
         // console.log(`active page is ${pageNumber}`);
@@ -85,11 +90,7 @@ const Sppd = () => {
                 handleCloseModal();
                 loadData();
             })
-            .catch((err) => {
-                err.response.data ? setErrorMessage(err.response.data.message) : setErrorMessage(err.message);
-                setReady(true);
-                setShow(true);
-            });
+            .catch((err) => { catchErr(err) });
     };
 
     const handlerPerPage = (value) => {
@@ -178,6 +179,9 @@ const Sppd = () => {
                                             data.map((v, index) => {
                                                 const berangkat = moment(v.tanggal_berangkat).tz("Asia/Jakarta").format("DD MMM YYYY");
 
+                                                const pathname = process.env.REACT_APP_URL_SPPD
+                                                const urlawal = pathname.replace("/v1/sppd", '')
+                                                const urlpdf = `${urlawal}/pdf/sppd_${v.nomor_sppd}.pdf`
                                                 return (
                                                     <tr key={index}>
                                                         <td key={`nomor_sppd${index}`}><center>{v.nomor_sppd}</center></td>
@@ -188,7 +192,7 @@ const Sppd = () => {
                                                         })}</td>
                                                         <td key={`tanggal_berangkat${index}`}>{berangkat}</td>
                                                         <td key={`lama_perjalanan${index}`}>{v.lama_perjalanan} Hari</td>
-                                                        <td key={`pdf${index}`}><a href="#">Lihat PDF</a></td>
+                                                        <td key={`pdf${index}`}><a href={urlpdf} target="_blank">Lihat PDF</a></td>
                                                         <td key={`action${index}`} style={{ width: "18%", paddingLeft: 20, paddingRight: 20, }}  >
                                                             <Row>
                                                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
@@ -216,8 +220,8 @@ const Sppd = () => {
                                                                     </Button>
                                                                 </Col>
                                                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
-                                                                    <Button variant="success" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Upload"> <BsUpload /> Upload
-                                                                    </Button>
+                                                                    {/* <Button variant="success" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Upload"> <BsUpload /> Upload
+                                                                    </Button> */}
                                                                 </Col>
                                                             </Row>
                                                         </td>
@@ -246,6 +250,22 @@ const Sppd = () => {
                     </Col>
                 </Row>
             </Container>
+
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Konfirmasi delete ?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Apakah anda ingin Menghapus Data ?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Batal
+                    </Button>
+                    <Button variant="primary" onClick={() => { deleteProcess(idDelete) }}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

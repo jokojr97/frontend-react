@@ -5,6 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CreateSppd from "../../page/admin/sppd/create";
 
 const ControllerCreateSppd = () => {
+
+  const d = new Date();
+  let year = d.getFullYear();
   const pathname = useLocation().pathname;
   const idPerjadin = pathname.replace("/sppd/create/", "");
   const urlPerjadin = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`;
@@ -40,6 +43,14 @@ const ControllerCreateSppd = () => {
   const [dataPegawai, setDataPegawai] = useState([]);
   const [sugesstionPejabat, setSugesstionPejabat] = useState([]);
   const [sugesstionPegawai, setSugesstionPegawai] = useState([]);
+
+  const [perihalPerjadin, setPerihalPerjadin] = useState('')
+  const [lokasiPerjadin, setLokasiPerjadin] = useState('')
+  const [alamatPerjadin, setAlamatPerjadin] = useState('')
+  const [tanggalBerangkatPerjadin, settanggalBerangkatPerjadin] = useState('')
+  const [tanggalKembaliPerjadin, setTanggalKembaliPerjadin] = useState('')
+  const [tahunPerjadin, setTahunPerjadin] = useState(year)
+  const [jenisPerjalananPerjadin, setJenisPerjalananPerjadin] = useState('Dalam Kota')
 
   const [errorNomorSppd, setErrorNomorSppd] = useState("");
   const [errorPemberiPerintah, setErrorPemberiPerintah] = useState();
@@ -111,10 +122,19 @@ const ControllerCreateSppd = () => {
     setTempatTujuan(val.lokasi);
   };
 
+  const setFormData = (values) => {
+    setPerihalPerjadin(values.perihal)
+    setLokasiPerjadin(values.lokasi)
+    setAlamatPerjadin(values.alamat)
+    setTahunPerjadin(values.tahun)
+    setJenisPerjalananPerjadin(values.jenis_perjadin)
+  }
+
   const loadData = () => {
     setReady(false);
     Axios.get(urlPerjadin)
       .then((value) => {
+        setFormData(value.data.data)
         setData(value.data.data);
         const berangkat = moment(value.tanggal_berangkat);
         const kembali = moment(value.tanggal_kembali);
@@ -177,9 +197,18 @@ const ControllerCreateSppd = () => {
     const bodyPerjadin = {
       _id: idPerjadin,
       nomor_sppd: nomorSppd,
+      perihal: perihalPerjadin,
+      lokasi: lokasiPerjadin,
+      alamat: alamatPerjadin,
+      tanggal_berangkat: tanggalBerangkat,
+      tanggal_kembali: tanggalKembali,
+      tahun: tahunPerjadin,
+      jenis_perjadin: jenisPerjalananPerjadin
     }
 
     console.log("body", body);
+    console.log("body perjadin", bodyPerjadin);
+    console.log("url perjadin", urledit);
 
     Axios.post(urlpdf, body)
       .then(
@@ -187,7 +216,7 @@ const ControllerCreateSppd = () => {
           .then((v) => {
             Axios.patch(urledit, bodyPerjadin).then(v => {
               history("/sppd");
-          }).catch(err => catchErr(err))
+            }).catch(err => catchErr(err))
           })
           .catch((err) => catchErr(err))
       )

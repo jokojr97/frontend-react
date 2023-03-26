@@ -102,7 +102,7 @@ const Perjadin = props => {
                             <td key={tahunKey}>{v.tahun}</td>
                             <td key={ssppdLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/sppd/create/${v._id}`)}><BsPlus />Buat </a></td>
                             <td key={sptLinkKey} style={{ width: "6%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/spt/create/${v._id}`)}><BsPlus />Buat </a></td>
-                            <td key={imageLinkKey} style={{ width: "10%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/image/create/${v._id}`)}><BsPlus />Upload </a></td>
+                            <td key={imageLinkKey} style={{ width: "10%" }}><a style={{ cursor: 'pointer', color: 'blue' }} onClick={() => props.history(`/kwitansi/create/${v._id}`)}><BsPlus />Buat </a></td>
                             <td key={actionKey} style={{ width: "18%", paddingLeft: 20, paddingRight: 20, }}  >
                               <Row>
                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>

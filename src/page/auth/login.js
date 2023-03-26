@@ -74,7 +74,7 @@ const Login = props => {
     return <div> {
         <Container>
             <Row style={{ margin: 0, position: "absolute", top: "20%" }}>
-                <Col md={{ span: 8, offset: 1 }}>
+                <Col md={{ span: 8, offset: 2 }}>
 
                     <Container fluid>
                         <MDBCard>

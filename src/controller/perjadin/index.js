@@ -122,7 +122,7 @@ const ControllerPerjadin = () => {
         "tahun",
         "SPPD",
         "SPT",
-        "Foto Kegiatan",
+        "Kwitansi",
     ];
 
     const history = useNavigate();
