@@ -20,6 +20,11 @@ const ControllerCreatePegawai = () => {
     const [bidang, setBidang] = useState('')
     const [golongan, setGolongan] = useState('')
     const [pangkat, setPangkat] = useState('')
+    const roleUser = {
+        id: 1,
+        level: "admin"
+    };
+    const [role, setRole] = useState(roleUser)
 
     const [errorname, setErrorName] = useState('')
     const [erroremail, setErrorEmail] = useState('')
@@ -85,7 +90,8 @@ const ControllerCreatePegawai = () => {
             bidang: bidang,
             golongan: golongan,
             pangkat: pangkat,
-            password: password
+            password: password,
+            level: role
         }
 
         const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/insert`;

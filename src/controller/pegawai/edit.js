@@ -28,6 +28,11 @@ const ControllerEditPegawai = () => {
     const [bidang, setBidang] = useState('')
     const [golongan, setGolongan] = useState('')
     const [pangkat, setPangkat] = useState('')
+    const roleUser = {
+        id: 1,
+        level: "admin"
+    };
+    const [role, setRole] = useState(roleUser)
 
     const [errorname, setErrorName] = useState('')
     const [erroremail, setErrorEmail] = useState('')
@@ -57,6 +62,10 @@ const ControllerEditPegawai = () => {
             setReady(true)
             setShow(true)
         })
+    }
+
+    const roleChangehandler = (values) => {
+
     }
 
     const setErrorForm = (err) => {
@@ -142,7 +151,10 @@ const ControllerEditPegawai = () => {
                 jabatan: jabatan,
                 bidang: bidang,
                 golongan: golongan,
-                pangkat: pangkat
+                pangkat: pangkat,
+                repeatPassword: repeatPassword,
+                password: password,
+                level: role
             }
             // console.log("body", body)
             const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/update/nonpass`
@@ -154,13 +166,14 @@ const ControllerEditPegawai = () => {
                 name: name.toLowerCase(),
                 email: email,
                 repeatPassword: repeatPassword,
+                password: password,
                 nip: nip,
                 instansi: instansi,
                 jabatan: jabatan,
                 bidang: bidang,
                 golongan: golongan,
                 pangkat: pangkat,
-                password: password
+                level: role
             }
             const urlapi = `${process.env.REACT_APP_URL_PEGAWAI}/update`
             // console.log("url", urlapi)
@@ -212,6 +225,7 @@ const ControllerEditPegawai = () => {
                 setPassword={setPassword}
                 showPassword={showPassword}
                 changeShowPassword={changeShowPassword}
+                roleChangehandler={roleChangehandler}
             />
         </div>
     )
