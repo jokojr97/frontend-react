@@ -90,6 +90,7 @@ const Perjadin = props => {
 
                         return (
                           <tr key={index}>
+                            <td key={v.nomor_sppd}>{v.nomor_sppd}</td>
                             <td key={perihalKey}>{v.perihal}</td>
                             <td key={lokasiKey}>{v.lokasi}</td>
                             <td key={tanggal_berangkatKey}>

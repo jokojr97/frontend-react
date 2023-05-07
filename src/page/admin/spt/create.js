@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
-import { Alert, Col, Container, Form, Row } from 'react-bootstrap'
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import Axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import moment from "moment-timezone";
+import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
 
 
 const CreateSpt = props => {
@@ -104,7 +105,7 @@ const CreateSpt = props => {
                     </Col>
                   </Row>
                   <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
-                    <Form.Label className="mb-1">Tempat Tujuan</Form.Label>
+                    <Form.Label className="mb-1">Lokasi Kegiatan</Form.Label>
                     <Form.Control style={{ fontSize: "13px" }} id="tujuan" type="text" value={props.lokasi} onChange={(e) => { props.setLokasi(e.target.value) }} placeholder="Masukkan Tjuan" disabled />
                     {(!props.errorLokasi) ? '' :
                       <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -112,6 +113,40 @@ const CreateSpt = props => {
                       </Form.Text>
                     }
                   </Form.Group>
+                  <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                    <Form.Label className="mb-1">Tanggal SPT</Form.Label>
+                    <Form.Control style={{ fontSize: "13px" }} id="tangalSpt" type="date" value={props.tangalSpt} onChange={(e) => { props.setTanggalSpt(e.target.value) }} placeholder="Masukkan Tanggal SPPD" />
+                    {(!props.errortangalSpt) ? '' :
+                      <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                        {props.errortangalSpt}
+                      </Form.Text>
+                    }
+                  </Form.Group>
+                  
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Pejabat yang memberi perintah</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} autoComplete="off" id="pemberiPerintah" type="text" value={props.textPemberiPerintah} onChange={(e) => { props.pejabatOnChangeHandler(e.target.value) }} placeholder="Masukkan Nama Pejabat" />
+                  {props.sugesstionPejabat && props.sugesstionPejabat.map((sugest, i) => {
+                    return <div key={i} className="sugesst-form" onClick={(e => props.sugesstPejabatHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
+                  })}
+                  {(!props.errorPerihal) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {props.errorPerihal}
+                    </Form.Text>
+                  }
+                </Form.Group>
+                <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
+                  <Form.Label className="mb-1">Pegawai yang merima Perintah</Form.Label>
+                  <Form.Control style={{ fontSize: "13px" }} id="pegawi" type="text" autoComplete="off" value={props.textPenerimaPerintah} onChange={(e) => { props.pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Nama Pegawai" />
+                  {props.sugesstionPegawai && props.sugesstionPegawai.map((sugest, i) => {
+                    return <div key={i} className="sugesst-form" onClick={(e => props.sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
+                  })}
+                  {(!props.errorPerihal) ? '' :
+                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
+                      {props.errorPerihal}
+                    </Form.Text>
+                  }
+                </Form.Group>
                   {/* <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Tempat Tujuan</Form.Label>
                   <Form.Control style={{ fontSize: "13px" }} id="tempatTujuan" type="text" value={props.tempatTujuan} onChange={(e) => { props.setTempatTujuan(e.target.value) }} placeholder="Masukkan Tempat Tujuan" disabled />
@@ -130,6 +165,10 @@ const CreateSpt = props => {
                       </Form.Text>
                     }
                   </Form.Group>
+                  <div className="mt-3">
+                    <Button type='submit' variant='success' className='float-end'><BsCheckCircle /> Simpan</Button>
+                    <Button variant='danger' className='float-end' style={{ marginRight: 5 }} onClick={() => { props.history("/perjadin") }}><BsXCircle />  Batal</Button>
+                  </div>
                 </Col>
               </Row>
             </Form>

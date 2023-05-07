@@ -16,6 +16,9 @@ const ControllerCreatePerjadin = () => {
     const [tanggalKembali, setTanggalKembali] = useState('')
     const [tahun, setTahun] = useState(year)
     const [jenisPerjalanan, setJenisPerjalanan] = useState('Dalam Kota')
+    const [kecamatan, setKecamatan] = useState([])
+    const [provinsi, setProvinsi] = useState([])
+    const [kabupaten, setKabupaten] = useState([])
 
     const [errorPerihal, setErrorPerihal] = useState('')
     const [errorLokasi, setErrorLokasi] = useState('')
@@ -55,6 +58,16 @@ const ControllerCreatePerjadin = () => {
         })
     }
 
+    const catchErr = (err) => {
+        err.response.data
+            ? setErrorMessage(err.response.data.message)
+            : setErrorMessage(err.message);
+        // if (err.response.data.data.errorStatus == 400) {
+        //   setErrorNotif(err.response.data.data.data);
+        // }
+        setReady(true);
+        setShow(true);
+    };
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -79,6 +92,29 @@ const ControllerCreatePerjadin = () => {
         })
         // console.log("body", body);
     }
+
+    const loadKecamatan = () => {
+        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
+            setKecamatan(val.data)
+        }).catch(err => { catchErr(err) })
+    
+    }
+    const loadProvinsi = () => {
+        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json').then((val) => {
+            setProvinsi(val.data)
+        }).catch(err => { catchErr(err) }) 
+    }
+    const loadKabupaten = (id) => {
+        Axios.get(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${id}.json`).then((val) => {
+            setKabupaten(val.data)
+        }).catch(err => { catchErr(err) })
+    }
+    
+    React.useEffect(() => {
+        loadKecamatan()
+        loadProvinsi()
+    }, [provinsi, kabupaten, kecamatan]);
+
     return (
         <div>
             <CreatePerjadin
@@ -109,6 +145,10 @@ const ControllerCreatePerjadin = () => {
                 errorTanggalKembali={errorTanggalKembali}
                 errorTahun={errorTahun}
                 errorJenisPerjalanan={errorJenisPerjalanan}
+                kecamatan={kecamatan}
+                provinsi={provinsi}
+                kabupaten={kabupaten}
+                loadKabupaten={loadKabupaten}
             />
         </div>
     )

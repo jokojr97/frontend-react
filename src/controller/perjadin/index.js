@@ -114,6 +114,7 @@ const ControllerPerjadin = () => {
     };
 
     const header = [
+        "Nomor SPT",
         "perihal",
         "lokasi",
         "berangkat",

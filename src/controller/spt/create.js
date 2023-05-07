@@ -9,6 +9,7 @@ const ControllerCreateSpt = () => {
 
     const d = new Date();
     let year = d.getFullYear();
+    const urlPegawai = `${process.env.REACT_APP_URL_PEGAWAI}`;
     const [show, setShow] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [ready, setReady] = useState(true);
@@ -23,6 +24,16 @@ const ControllerCreateSpt = () => {
     const [jenisPerjalanan, setJenisPerjalanan] = useState('')
 
 
+
+    const [dataPegawai, setDataPegawai] = useState([]);
+    
+    const [textPemberiPerintah, setTextPemberiPerintah] = useState("");
+    const [pemberiPerintah, setPemberiPerintah] = useState([]);
+    const [penerimaPerintah, setPenerimaPerintah] = useState([]);
+    const [textPenerimaPerintah, setTextPenerimaPerintah] = useState("");
+    const [sugesstionPejabat, setSugesstionPejabat] = useState([]);
+    const [sugesstionPegawai, setSugesstionPegawai] = useState([]);
+
     const editorRef = useRef();
     const EditorHandler = (editor) => {
         console.log(editorRef.current)
@@ -34,6 +45,74 @@ const ControllerCreateSpt = () => {
     const pathname = useLocation().pathname;
     const idPerjadin = pathname.replace("/spt/create/", "");
     const urlPerjadin = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`;
+
+    
+    const loadPegawai = () => {
+        Axios.get(urlPegawai)
+        .then((v) => {
+            setDataPegawai(v.data.data);
+        })
+        .catch((err) => catchErr(err));
+    };
+
+    
+    const sugesstPejabatHandler = (data) => {
+        setTextPemberiPerintah(`${data.name} - ${data.jabatan}`);
+        setPemberiPerintah(data);
+        // console.log("sugesst", pemberiPerintah)
+        setSugesstionPejabat("");
+    };
+
+    const sugesstPegawaiHandler = (data) => {
+        setTextPenerimaPerintah(`${data.name} - ${data.jabatan}`);
+        if (!penerimaPerintah) {
+        setPenerimaPerintah({
+            name: data.name,
+            jabatan: data.jabatan,
+            pangkat: data.pangkat,
+            nip: data.nip,
+            golongan: data.golongan,
+        });
+        } else {
+        penerimaPerintah.push({
+            name: data.name,
+            jabatan: data.jabatan,
+            pangkat: data.pangkat,
+            nip: data.nip,
+            golongan: data.golongan,
+        });
+        setPenerimaPerintah(penerimaPerintah);
+        }
+        // console.log("pgawai", penerimaPerintah)
+        setSugesstionPegawai("");
+    };
+
+    const pegawaiOnChangeHandler = (text) => {
+        setTextPenerimaPerintah(text);
+        let matches = [];
+        if (text.length > 0) {
+        matches = dataPegawai.filter((pegawai) => {
+            const regex = new RegExp(`${textPenerimaPerintah}`, "gi");
+            return pegawai.name.match(regex);
+        });
+        }
+        // setPenerimaPerintah('')
+        setSugesstionPegawai(matches);
+    };
+
+    const pejabatOnChangeHandler = (text) => {
+        // console.log("dataPerjalanan", dataPegawai)
+        setTextPemberiPerintah(text);
+        let matches = [];
+        if (text.length > 0) {
+        matches = dataPegawai.filter((pegawai) => {
+            const regex = new RegExp(`${textPemberiPerintah}`, "gi");
+            return pegawai.name.match(regex);
+        });
+        }
+        setSugesstionPejabat(matches);
+    };
+
 
     const loadDataKecamatan = () => {
         Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
@@ -71,6 +150,8 @@ const ControllerCreateSpt = () => {
         // cekSPPD()
         loadDataKecamatan();
         loadDataPerjadin()
+        loadPegawai();
+
     }, []);
 
     const catchErr = (err) => {
@@ -100,6 +181,25 @@ const ControllerCreateSpt = () => {
                 EditorHandler={EditorHandler}
                 lamaPerjalanan={lamaPerjalanan}
                 jenisPerjalanan={jenisPerjalanan}
+                
+                textPemberiPerintah={textPemberiPerintah}
+                setTextPemberiPerintah={setTextPemberiPerintah}
+                pemberiPerintah={pemberiPerintah}
+                setPemberiPerintah={setPemberiPerintah}
+                penerimaPerintah={penerimaPerintah}
+                setPenerimaPerintah={setPenerimaPerintah}
+                textPenerimaPerintah={textPenerimaPerintah}
+                setTextPenerimaPerintah={setTextPenerimaPerintah}
+                dataPegawai={dataPegawai}
+                setDataPegawai={setDataPegawai}
+                sugesstionPejabat={sugesstionPejabat}
+                setSugesstionPejabat={setSugesstionPejabat}
+                sugesstionPegawai={sugesstionPegawai}
+                setSugesstionPegawai={setSugesstionPegawai}
+                sugesstPegawaiHandler={sugesstPegawaiHandler}
+                sugesstPejabatHandler={sugesstPejabatHandler}
+                pejabatOnChangeHandler={pejabatOnChangeHandler}
+                pegawaiOnChangeHandler={pegawaiOnChangeHandler}
             />
         </div>
     )

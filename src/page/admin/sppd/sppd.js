@@ -118,7 +118,7 @@ const Sppd = () => {
 
     return (
         <div>
-            <Container className='p-3'>
+            <Container fluid>
                 <Row>
                     <Col className="p-3">
                         {!show ? ("") : (
