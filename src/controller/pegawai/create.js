@@ -15,7 +15,7 @@ const ControllerCreatePegawai = () => {
     const [repeatPassword, setRepeatPassword] = useState('')
     const [password, setPassword] = useState('')
     const [nip, setNip] = useState('')
-    const [instansi, setInstansi] = useState('')
+    const [instansi, setInstansi] = useState('Bagian Protokol dan Komunikasi Pimpinan')
     const [jabatan, setJabatan] = useState('')
     const [bidang, setBidang] = useState('')
     const [golongan, setGolongan] = useState('')
