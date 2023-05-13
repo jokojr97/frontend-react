@@ -26,7 +26,7 @@ const Spt = () => {
     const [messageType, setMessageType] = useState('')
     const isMessage = localStorage.message != null;
     const messagevariant = localStorage.messageType != null;
-    
+
     const setAlert = () => {
         if (isMessage) {
             setMessage(isMessage)
@@ -64,7 +64,7 @@ const Spt = () => {
     };
 
     const deleteProcess = (id) => {
-        Axios.delete(`${process.env.REACT_APP_URL_SPPD}/${id}`).then(v => {
+        Axios.delete(`${process.env.REACT_APP_URL_SPT}/${id}`).then(v => {
             handleCloseModal()
             loadData()
         }).catch(err => { catchErr(err) })
@@ -179,15 +179,15 @@ const Spt = () => {
                                             data.map((v, index) => {
                                                 const berangkat = moment(v.tanggal_berangkat).tz("Asia/Jakarta").format("DD MMM YYYY");
 
-                                                const pathname = process.env.REACT_APP_URL_SPPD
-                                                const urlawal = pathname.replace("/v1/sppd", '')
-                                                const urlpdf = `${urlawal}/pdf/sppd_${v.nomor_sppd}.pdf`
+                                                const pathname = process.env.REACT_APP_URL_SPT
+                                                const urlawal = pathname.replace("/v1/spt", '')
+                                                const urlpdf = `${urlawal}/pdf/spt_${v.nomor_spt}.pdf`
                                                 return (
                                                     <tr key={index}>
-                                                        <td key={`nomor_sppd${index}`}><center>{v.nomor_sppd}</center></td>
+                                                        <td key={`nomor_spt${index}`}><center>{v.nomor_spt}</center></td>
                                                         <td key={`perihal${index}`}>{v.perihal}</td>
-                                                        <td key={`tempat_tujuan${index}`}>{v.tempat_tujuan}</td>
-                                                        <td key={`tempat_tujuan${index}`}>{v.tempat_tujuan}</td>
+                                                        <td key={`lokasi_kegiatan${index}`}>{v.lokasi_kegiatan}</td>
+                                                        <td key={`pegawai_yang_diperintahkan${index}`}>{v.pegawai_yang_diperintahkan.name}</td>
                                                         {/* <td key={`pegawai${index}`}>{v.pegawai_yang_diperintahkan.map((v, i) => {
                                                             return (i > 0) ? `, ${v.name}` : v.name
                                                         })}</td> */}
@@ -197,7 +197,7 @@ const Spt = () => {
                                                         <td key={`action${index}`} style={{ width: "18%", paddingLeft: 20, paddingRight: 20, }}  >
                                                             <Row>
                                                                 <Col md="6" className="d-grid" style={{ padding: 0 }}>
-                                                                    <Button variant="primary" size="sm" className="m-1" style={{ fontSize: "12px" }} onClick={() => { history(`/sppd/${v._id}`); }} aria-label="Detail" >
+                                                                    <Button variant="primary" size="sm" className="m-1" style={{ fontSize: "12px" }} onClick={() => { history(`/spt/${v._id}`); }} aria-label="Detail" >
                                                                         <BsEye /> Detail
                                                                     </Button>
                                                                 </Col>
@@ -207,7 +207,7 @@ const Spt = () => {
                                                                     style={{ padding: 0 }}
                                                                 >
                                                                     <Button variant="warning" size="sm" className="m-1" style={{ fontSize: "12px" }} aria-label="Edit" onClick={() => {
-                                                                        history(`/sppd/edit/${v._id}`);
+                                                                        history(`/spt/edit/${v._id}`);
                                                                     }}
                                                                     >
                                                                         <BsPencil /> Edit

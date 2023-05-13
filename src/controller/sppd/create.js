@@ -206,9 +206,9 @@ const ControllerCreateSppd = () => {
       jenis_perjadin: jenisPerjalananPerjadin
     }
 
-    console.log("body", body);
-    console.log("body perjadin", bodyPerjadin);
-    console.log("url perjadin", urledit);
+    // console.log("body", body);
+    // console.log("body perjadin", bodyPerjadin);
+    // console.log("url perjadin", urledit);
 
     Axios.post(urlpdf, body)
       .then(
