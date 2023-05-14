@@ -150,11 +150,11 @@ const ControllerCreateSpt = () => {
     };
 
 
-    const loadDataKecamatan = () => {
-        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
-            setKecamatan(val)
-        }).catch(err => { catchErr(err) })
-    }
+    // const loadDataKecamatan = () => {
+    //     Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
+    //         setKecamatan(val)
+    //     }).catch(err => { catchErr(err) })
+    // }
 
     const setFormData = (values) => {
         setPerihal(values.perihal)
@@ -170,8 +170,8 @@ const ControllerCreateSpt = () => {
         setTanggalBerangkat(tglBerangkat.tz("Asia/Jakarta").format("YYYY-MM-DD"))
         setTanggalKembali(tglKembali.tz("Asia/Jakarta").format("YYYY-MM-DD"))
 
-        setPerihalPerjadin(values.perihal)
-        setLokasiPerjadin(values.lokasi)
+        // setPerihalPerjadin(values.perihal)
+        // setLokasiPerjadin(values.lokasi)
         setAlamatPerjadin(values.alamat)
         setTahunPerjadin(values.tahun)
         setJenisPerjalananPerjadin(values.jenis_perjadin)
@@ -194,7 +194,6 @@ const ControllerCreateSpt = () => {
 
     React.useEffect(() => {
         // cekSPPD()
-        loadDataKecamatan();
         loadDataPerjadin()
         loadPegawai();
 
