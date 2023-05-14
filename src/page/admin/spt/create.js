@@ -1,12 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import { Editor } from '@tinymce/tinymce-react';
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
-import Axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
-
-import moment from "moment-timezone";
+import { Alert, Badge, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
-
 
 const CreateSpt = props => {
 
@@ -61,21 +56,20 @@ const CreateSpt = props => {
                     <Form.Label className="mb-1">Pejabat yang memberi perintah</Form.Label>
 
                     <Form.Select style={{ fontSize: "13px" }} aria-label="PemberiPerintah" onChange={(e) => { props.pemberiPerintahHandler(e.target.value); }} >
-                      <option value="kadis">TRIGUNO S. PRIO, S.STP, MM</option>
-                      <option value="assisten">NINIK SUSMIATI, SKM, MKeS</option>
+                      <option value="kadis">KABAG - TRIGUNO S. PRIO, S.STP, MM</option>
+                      <option value="assisten">ASSISTEN 3 - NINIK SUSMIATI, SKM, MKeS</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                     <Form.Label className="mb-1">Pegawai yang merima Perintah</Form.Label>
-                    <Form.Control style={{ fontSize: "13px" }} id="pegawi" type="text" autoComplete="off" value={props.textPenerimaPerintah} onChange={(e) => { props.pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Nama Pegawai" />
+                    <Form.Control style={{ fontSize: "13px", marginBottom: "5px" }} id="pegawi" type="text" autoComplete="off" value={props.textPenerimaPerintah} onChange={(e) => { props.pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Nama Pegawai" />
                     {props.sugesstionPegawai && props.sugesstionPegawai.map((sugest, i) => {
                       return <div key={i} className="sugesst-form" onClick={(e => props.sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
                     })}
-                    {(!props.errorPerihal) ? '' :
-                      <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                        {props.errorPerihal}
-                      </Form.Text>
-                    }
+                    {/* {console.log("pp", props.penerimaPerintah)} */}
+                    {props.penerimaPerintah && props.penerimaPerintah.map((val, index) => {
+                      return <i style={{ margin: "2px", fontSize: "16px" }}><Badge bg="success" onClick={() => props.removeTags(index)} style={{ cursor: "pointer" }}>{val.name} - {val.jabatan} <BsXCircle onClick={() => props.removeTags(index)} /></Badge></i>
+                    })}
                   </Form.Group>
 
                   <Form.Group className="mb-2" style={{ fontSize: "13px" }}>

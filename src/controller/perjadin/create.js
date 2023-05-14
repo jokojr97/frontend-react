@@ -2,18 +2,21 @@ import Axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CreatePerjadin from '../../page/admin/perjadin/create'
+import moment from "moment-timezone";
+
 
 const ControllerCreatePerjadin = () => {
 
     const urlapi = `${process.env.REACT_APP_URL_PERJADIN}/insert`
 
     const d = new Date();
+    const now = moment(d).tz("Asia/Jakarta").format("YYYY-MM-DD");
     let year = d.getFullYear();
     const [perihal, setPerihal] = useState('')
     const [lokasi, setLokasi] = useState('')
     const [alamat, setAlamat] = useState('')
-    const [tanggalBerangkat, settanggalBerangkat] = useState('')
-    const [tanggalKembali, setTanggalKembali] = useState('')
+    const [tanggalBerangkat, settanggalBerangkat] = useState(now)
+    const [tanggalKembali, setTanggalKembali] = useState(now)
     const [tahun, setTahun] = useState(year)
     const [jenisPerjalanan, setJenisPerjalanan] = useState('Dalam Kota')
     const [kecamatan, setKecamatan] = useState([])
@@ -97,19 +100,19 @@ const ControllerCreatePerjadin = () => {
         Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
             setKecamatan(val.data)
         }).catch(err => { catchErr(err) })
-    
+
     }
     const loadProvinsi = () => {
         Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json').then((val) => {
             setProvinsi(val.data)
-        }).catch(err => { catchErr(err) }) 
+        }).catch(err => { catchErr(err) })
     }
-    const loadKabupaten = (id) => {
+    const loadKabupaten = (id = 35) => {
         Axios.get(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${id}.json`).then((val) => {
             setKabupaten(val.data)
         }).catch(err => { catchErr(err) })
     }
-    
+
     React.useEffect(() => {
         loadKecamatan()
         loadProvinsi()

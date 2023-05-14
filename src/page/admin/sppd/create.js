@@ -104,21 +104,17 @@ const CreateSppd = props => {
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Pejabat yang memberi perintah</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} autoComplete="off" id="pemberiPerintah" type="text" value={props.textPemberiPerintah} onChange={(e) => { props.pejabatOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
-                  {props.sugesstionPejabat && props.sugesstionPejabat.map((sugest, i) => {
-                    return <div key={i} className="sugesst-form" onClick={(e => props.sugesstPejabatHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
-                  })}
-                  {(!props.errorPerihal) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {props.errorPerihal}
-                    </Form.Text>
-                  }
+
+                  <Form.Select style={{ fontSize: "13px" }} aria-label="PemberiPerintah" onChange={(e) => { props.pemberiPerintahHandler(e.target.value); }} >
+                    <option value="kadis">KABAG - TRIGUNO S. PRIO, S.STP, MM</option>
+                    <option value="assisten">ASSISTEN 3 - NINIK SUSMIATI, SKM, MKeS</option>
+                  </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Pegawai yang merima Perintah</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="pegawi" type="text" autoComplete="off" value={props.textPenerimaPerintah} onChange={(e) => { props.pegawaiOnChangeHandler(e.target.value) }} placeholder="Masukkan Perihal" />
+                  <Form.Control style={{ fontSize: "13px", textTransform: "capitalize" }} id="pegawi" type="text" autoComplete="off" value={props.textPenerimaPerintah} onChange={(e) => { props.pegawaiOnChangeHandler(e.target.value) }} placeholder="Ketikkan Nama Pegawai" />
                   {props.sugesstionPegawai && props.sugesstionPegawai.map((sugest, i) => {
-                    return <div key={i} className="sugesst-form" onClick={(e => props.sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
+                    return <div key={i} className="sugesst-form" style={{ textTransform: "capitalize" }} onClick={(e => props.sugesstPegawaiHandler(sugest))}>{sugest.name} - {sugest.jabatan}</div>
                   })}
                   {(!props.errorPerihal) ? '' :
                     <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
@@ -128,12 +124,14 @@ const CreateSppd = props => {
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Angkutan</Form.Label>
-                  <Form.Control style={{ fontSize: "13px" }} id="angkutan" type="text" value={props.angkutan} onChange={(e) => { props.setAngkutan(e.target.value) }} placeholder="Masukkan Angkutan" />
-                  {(!props.errorAnngkutan) ? '' :
-                    <Form.Text className="text-danger" style={{ fontSize: "12px" }}>
-                      {props.errorAnngkutan}
-                    </Form.Text>
-                  }
+
+                  <Form.Select style={{ fontSize: "13px" }} aria-label="PemberiPerintah" onChange={(e) => { props.setAngkutan(e.target.value) }} >
+                    <option>Transportasi Darat</option>
+                    <option>Transportasi Udara</option>
+                    <option>Transportasi Laut</option>
+                    <option>Transportasi Darat dan Udara</option>
+                    <option>Transportasi Darat dan Laut</option>
+                  </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-2" style={{ fontSize: "13px" }}>
                   <Form.Label className="mb-1">Tempat Berangkat</Form.Label>

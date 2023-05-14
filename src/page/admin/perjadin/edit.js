@@ -32,32 +32,69 @@ const EditPerjadin = props => {
                     }
                   </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label>Lokasi</Form.Label>
-                    <Form.Control id="lokasi" type="text" value={props.lokasi} onChange={(e) => { props.setLokasi(e.target.value) }} placeholder="Enter Lokasi" />
-                    {(!props.errorLokasi) ? '' :
-                      <Form.Text className="text-danger">
-                        {props.errorLokasi}
-                      </Form.Text>
-                    }
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Alamat</Form.Label>
-                    <Form.Control id="alamat" type="text" value={props.alamat} onChange={(e) => { props.setAlamat(e.target.value) }} placeholder="Enter Alamat" />
-                    {(!props.errorAlamat) ? '' :
-                      <Form.Text className="text-danger">
-                        {props.errorAlamat}
-                      </Form.Text>
-                    }
-                  </Form.Group>
-                  <Form.Group className="mb-3">
                     <Form.Label>Jenis Perjalanan</Form.Label>
-                    <Form.Select aria-label="Jenis Perjalanan" value={props.jenisPerjalanan} onChange={(e) => { props.setJenisPerjalanan(e.target.value); }} >
-                      <option value="Dalam Kota">Dalam Kota</option>
+
+                    <Form.Select aria-label="Jenis Perjalanan" onChange={(e) => { props.setJenisPerjalanan(e.target.value); }} >
+                      <option value={props.jenisPerjalanan} >{props.jenisPerjalanan}</option>
+                      <option value="Dalam Kota" >Dalam Kota</option>
                       <option value="Luar Kota">Luar Kota</option>
                     </Form.Select>
                     {(!props.errorJenisPerjalanan) ? '' :
                       <Form.Text className="text-danger">
                         {props.errorJenisPerjalanan}
+                      </Form.Text>
+                    }
+                  </Form.Group>
+                  {(props.jenisPerjalanan == 'Dalam Kota' ? '' :
+                    <>
+                      <Row>
+                        <Col xs="6">
+                          <Form.Group className="mb-3">
+                            <Form.Label>Provinsi</Form.Label>
+                            <Form.Select aria-label="Provinsi" onChange={(e) => { props.loadKabupaten(e.target.value); }} >
+                              <option value="">Pilih Salah Satu</option>
+
+                              {props.provinsi.map((val) => {
+                                return <option style={{ textTransform: 'capitalize' }} value={val.id}>{val.name}</option>
+                              })}
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+                        <Col xs="6">
+                          <Form.Group className="mb-3">
+                            <Form.Label>Kabupaten</Form.Label>
+                            <Form.Select aria-label="Jenis Perjalanan" onChange={(e) => { props.setLokasi(e.target.value); }} >
+                              <option>{props.lokasi}</option>
+
+                              {props.kabupaten.map((val) => {
+                                return <option style={{ textTransform: 'capitalize' }} value={val.id}>{val.name}</option>
+                              })}
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </>
+                  )}
+                  {(props.jenisPerjalanan == 'Luar Kota' ? '' :
+                    <Form.Group className="mb-3">
+                      <Form.Label>Kecamatan</Form.Label>
+                      <Form.Select aria-label="kecamtan" style={{ textTransform: 'capitalize' }} onChange={(e) => { props.setLokasi(e.target.value); }} >
+                        {/* <option value="">Pilih Salah Satu</option> */}
+                        <option value={props.jenisPerjalanan} >{props.lokasi}</option>
+
+
+                        {props.kecamatan.map((val) => {
+                          return <option style={{ textTransform: 'capitalize' }}>{val.name}</option>
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                  )}
+                  <Form.Group className="mb-3">
+                    <Form.Label>Tujuan</Form.Label>
+                    <Form.Control id="alamat" type="text" value={props.alamat} onChange={(e) => { props.setAlamat(e.target.value) }} placeholder="Enter Alamat" />
+                    {(!props.errorAlamat) ? '' :
+                      <Form.Text className="text-danger">
+                        {props.errorAlamat}
                       </Form.Text>
                     }
                   </Form.Group>

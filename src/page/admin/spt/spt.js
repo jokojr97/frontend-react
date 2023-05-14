@@ -187,7 +187,7 @@ const Spt = () => {
                                                         <td key={`nomor_spt${index}`}><center>{v.nomor_spt}</center></td>
                                                         <td key={`perihal${index}`}>{v.perihal}</td>
                                                         <td key={`lokasi_kegiatan${index}`}>{v.lokasi_kegiatan}</td>
-                                                        <td key={`pegawai_yang_diperintahkan${index}`}>{v.pegawai_yang_diperintahkan.name}</td>
+                                                        <td key={`pegawai_yang_diperintahkan${index}`}>{v.pegawai_yang_diperintahkan.map((v) => { return v.name + ", " })}</td>
                                                         {/* <td key={`pegawai${index}`}>{v.pegawai_yang_diperintahkan.map((v, i) => {
                                                             return (i > 0) ? `, ${v.name}` : v.name
                                                         })}</td> */}

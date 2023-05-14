@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import React, { useState } from 'react'
+import moment from "moment-timezone";
 import { useLocation, useNavigate } from 'react-router-dom'
 import EditPerjadin from '../../page/admin/perjadin/edit'
 
@@ -16,10 +17,13 @@ const ControllerEditPerjadin = () => {
     const [perihal, setPerihal] = useState('')
     const [lokasi, setLokasi] = useState('')
     const [alamat, setAlamat] = useState('')
-    const [tanggalBerangkat, settanggalBerangkat] = useState('')
+    const [tanggalBerangkat, setTanggalBerangkat] = useState('')
     const [tanggalKembali, setTanggalKembali] = useState('')
     const [tahun, setTahun] = useState(year)
     const [jenisPerjalanan, setJenisPerjalanan] = useState('Dalam Kota')
+    const [kecamatan, setKecamatan] = useState([])
+    const [provinsi, setProvinsi] = useState([])
+    const [kabupaten, setKabupaten] = useState([])
 
     const [errorPerihal, setErrorPerihal] = useState('')
     const [errorLokasi, setErrorLokasi] = useState('')
@@ -94,20 +98,42 @@ const ControllerEditPerjadin = () => {
             setReady(true)
         }).catch(err => catchErr(err))
     }
-    
+
+    const loadKecamatan = () => {
+        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
+            setKecamatan(val.data)
+        }).catch(err => { catchErr(err) })
+
+    }
+    const loadProvinsi = () => {
+        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json').then((val) => {
+            setProvinsi(val.data)
+        }).catch(err => { catchErr(err) })
+    }
+    const loadKabupaten = (id = 35) => {
+        Axios.get(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${id}.json`).then((val) => {
+            setKabupaten(val.data)
+        }).catch(err => { catchErr(err) })
+    }
 
     const setFormData = (values) => {
         setPerihal(values.perihal)
         setLokasi(values.lokasi)
         setAlamat(values.alamat)
-        settanggalBerangkat(values.tanggalBerangkat)
-        setTanggalKembali(values.tanggalKembali)
+
+        const tglBerangkat = moment(values.tanggal_berangkat);
+        const tglKembali = moment(values.tanggal_kembali);
+        setTanggalBerangkat(tglBerangkat.tz("Asia/Jakarta").format("YYYY-MM-DD"));
+        setTanggalKembali(tglKembali.tz("Asia/Jakarta").format("YYYY-MM-DD"));
         setTahun(values.tahun)
-        setJenisPerjalanan(values.jenisPerjalanan)
+        setJenisPerjalanan(values.jenis_perjadin)
     }
 
     React.useEffect(() => {
         loadData()
+        loadKecamatan()
+        loadProvinsi()
+        loadKabupaten()
     }, [])
 
     return (
@@ -125,7 +151,7 @@ const ControllerEditPerjadin = () => {
                 alamat={alamat}
                 setAlamat={setAlamat}
                 tanggalBerangkat={tanggalBerangkat}
-                settanggalBerangkat={settanggalBerangkat}
+                settanggalBerangkat={setTanggalBerangkat}
                 tanggalKembali={tanggalKembali}
                 setTanggalKembali={setTanggalKembali}
                 tahun={tahun}
@@ -140,6 +166,10 @@ const ControllerEditPerjadin = () => {
                 errorTanggalKembali={errorTanggalKembali}
                 errorTahun={errorTahun}
                 errorJenisPerjalanan={errorJenisPerjalanan}
+                kecamatan={kecamatan}
+                provinsi={provinsi}
+                kabupaten={kabupaten}
+                loadKabupaten={loadKabupaten}
             />
         </div>
     )

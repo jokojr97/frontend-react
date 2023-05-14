@@ -42,47 +42,47 @@ const CreatePerjadin = props => {
                                             </Form.Text>
                                         }
                                     </Form.Group>
-                                    {(props.jenisPerjalanan=='Dalam Kota' ? '' :
-                                    <>
-                                        <Row>
-                                            <Col xs="6">
-                                            <Form.Group className="mb-3">
-                                                <Form.Label>Provinsi</Form.Label>
-                                                <Form.Select aria-label="Provinsi" onChange={(e) => { props.loadKabupaten(e.target.value); }} >
-                                                <option value="">Pilih Salah Satu</option>
+                                    {(props.jenisPerjalanan == 'Dalam Kota' ? '' :
+                                        <>
+                                            <Row>
+                                                <Col xs="6">
+                                                    <Form.Group className="mb-3">
+                                                        <Form.Label>Provinsi</Form.Label>
+                                                        <Form.Select aria-label="Provinsi" onChange={(e) => { props.loadKabupaten(e.target.value); }} >
+                                                            <option value="">Pilih Salah Satu</option>
 
-                                                {props.provinsi.map((val) => {
-                                                return <option style={{textTransform:'capitalize'}} value={val.id}>{val.name}</option>
-                                                }) }
-                                                </Form.Select>
-                                            </Form.Group>
-                                            </Col>
-                                            <Col xs="6">
-                                            <Form.Group className="mb-3">
-                                                <Form.Label>Kabupaten</Form.Label>
-                                                <Form.Select aria-label="Jenis Perjalanan" onChange={(e) => { props.setLokasi(e.target.value); }} >
-                                                <option value="">Pilih Salah Satu</option>
+                                                            {props.provinsi.map((val) => {
+                                                                return <option style={{ textTransform: 'capitalize' }} value={val.id}>{val.name}</option>
+                                                            })}
+                                                        </Form.Select>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col xs="6">
+                                                    <Form.Group className="mb-3">
+                                                        <Form.Label>Kabupaten</Form.Label>
+                                                        <Form.Select aria-label="Jenis Perjalanan" onChange={(e) => { props.setLokasi(e.target.value); }} >
+                                                            <option value="">Pilih Salah Satu</option>
 
-                                                {props.kabupaten.map((val) => {
-                                                return <option style={{textTransform:'capitalize'}} value={val.id}>{val.name}</option>
-                                                }) }
-                                                </Form.Select>
-                                            </Form.Group>
-                                            </Col>
-                                        </Row>
-                                    </>
+                                                            {props.kabupaten.map((val) => {
+                                                                return <option style={{ textTransform: 'capitalize' }} value={val.id}>{val.name}</option>
+                                                            })}
+                                                        </Form.Select>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                        </>
                                     )}
-                                    {(props.jenisPerjalanan=='Luar Kota' ? '' :
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Kecamatan</Form.Label>                                        
-                                        <Form.Select aria-label="kecamtan" style={{textTransform:'capitalize'}} onChange={(e) => { props.setLokasi(e.target.value); }} >
-                                            <option value="">Pilih Salah Satu</option>
+                                    {(props.jenisPerjalanan == 'Luar Kota' ? '' :
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Kecamatan</Form.Label>
+                                            <Form.Select aria-label="kecamtan" style={{ textTransform: 'capitalize' }} onChange={(e) => { props.setLokasi(e.target.value); }} >
+                                                <option value="">Pilih Salah Satu</option>
 
-                                            {props.kecamatan.map((val) => {
-                                               return <option style={{textTransform:'capitalize'}}>{val.name}</option>
-                                            }) }
-                                        </Form.Select>
-                                    </Form.Group>
+                                                {props.kecamatan.map((val) => {
+                                                    return <option style={{ textTransform: 'capitalize' }}>{val.name}</option>
+                                                })}
+                                            </Form.Select>
+                                        </Form.Group>
                                     )}
                                     <Form.Group className="mb-3">
                                         <Form.Label>Tujuan</Form.Label>
@@ -97,7 +97,7 @@ const CreatePerjadin = props => {
                                 <Col md="6">
                                     <Form.Group className="mb-3">
                                         <Form.Label>Tanggal Berangkat</Form.Label>
-                                        <Form.Control type="date" id="tanggalBerangkat" onChange={(e) => { props.settanggalBerangkat(e.target.value) }} placeholder="Enter Tanggal Berangakt" />
+                                        <Form.Control type="date" id="tanggalBerangkat" value={props.tanggalBerangkat} onChange={(e) => { props.settanggalBerangkat(e.target.value) }} placeholder="Enter Tanggal Berangakat" />
                                         {(!props.errorTanggalBerangkat) ? '' :
                                             <Form.Text className="text-danger">
                                                 {props.errorTanggalBerangkat}
@@ -106,7 +106,7 @@ const CreatePerjadin = props => {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Tanggal Kembali</Form.Label>
-                                        <Form.Control type="date" id="tanggalKembali" onChange={(e) => { props.setTanggalKembali(e.target.value) }} placeholder="Enter Tanggal Kembali" />
+                                        <Form.Control type="date" id="tanggalKembali" value={props.tanggalKembali} onChange={(e) => { props.setTanggalKembali(e.target.value) }} placeholder="Enter Tanggal Kembali" />
                                         {(!props.errorTanggalKembali) ? '' :
                                             <Form.Text className="text-danger">
                                                 {props.errorTanggalKembali}

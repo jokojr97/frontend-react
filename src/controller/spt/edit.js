@@ -2,24 +2,25 @@ import Axios from "axios";
 import moment from "moment-timezone";
 import React, { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import CreateSpt from '../../page/admin/spt/create'
+import EditSpt from '../../page/admin/spt/edit'
 
-
-const ControllerCreateSpt = () => {
+const ControllerEditSpt = () => {
 
     const d = new Date();
     let year = d.getFullYear();
     const urlPegawai = `${process.env.REACT_APP_URL_PEGAWAI}`;
-    const urlCreate = `${process.env.REACT_APP_URL_SPT}/insert`;
+    const urlUpdate = `${process.env.REACT_APP_URL_SPT}/update`;
     const urledit = `${process.env.REACT_APP_URL_PERJADIN}/update`
     const urlpdf = `${process.env.REACT_APP_URL_SPT}/pdf/create`;
     const [show, setShow] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [ready, setReady] = useState(true);
+    // const [data, setData] = useState([])
 
     const [perihal, setPerihal] = useState('')
     const [lokasi, setLokasi] = useState('')
     const [alamat, setAlamat] = useState('')
+    const [dasarSpt, SetDasarSPT] = useState('')
     const [nomorSpt, setNomorSpt] = useState('')
     const [tahun, setTahun] = useState('')
     const [berangkatPerjadin, setBerangkat] = useState('')
@@ -39,33 +40,15 @@ const ControllerCreateSpt = () => {
 
     const [dataPegawai, setDataPegawai] = useState([]);
 
-    const ttd = {
-        an: [{
-            name: "a.n. SEKRETARIS DAERAH"
-        }, {
-            name: "Asisten Administrasi Umum"
-        }, {
-            name: "U.b"
-        }],
-        name: "TRIGUNO S. PRIO, S.STP, MM",
-        jabatan: "Kepala Bagian Protokol dan Komunikasi Pimpinan",
-        pangkat: "Pembina",
-        nip: "19810815 199912 1 002",
-        golongan: "",
-    }
-
     const [textPemberiPerintah, setTextPemberiPerintah] = useState("");
-    const [pemberiPerintah, setPemberiPerintah] = useState(ttd);
+    const [pemberiPerintah, setPemberiPerintah] = useState("");
     const [penerimaPerintah, setPenerimaPerintah] = useState([]);
     const [textPenerimaPerintah, setTextPenerimaPerintah] = useState("");
     const [sugesstionPejabat, setSugesstionPejabat] = useState([]);
     const [sugesstionPegawai, setSugesstionPegawai] = useState([]);
 
-    const [alamatPerjadin, setAlamatPerjadin] = useState('')
     const [tanggalBerangkat, setTanggalBerangkat] = useState("");
     const [tanggalKembali, setTanggalKembali] = useState("");
-    const [tahunPerjadin, setTahunPerjadin] = useState(year)
-    const [jenisPerjalananPerjadin, setJenisPerjalananPerjadin] = useState('')
 
     const editorRef = useRef();
     const EditorHandler = (editor) => {
@@ -75,9 +58,95 @@ const ControllerCreateSpt = () => {
     }
     const history = useNavigate()
     const pathname = useLocation().pathname;
-    const idPerjadin = pathname.replace("/spt/create/", "");
-    const urlPerjadin = `${process.env.REACT_APP_URL_PERJADIN}/${idPerjadin}`;
+    const idSPT = pathname.replace("/spt/edit/", "");
+    const urlSPT = `${process.env.REACT_APP_URL_SPT}/${idSPT}`;
 
+    const setDataSPT = (data) => {
+        setNomorSpt(data.nomor_spt)
+        SetDasarSPT(data.dasar_spt)
+        setPerihal(data.perihal)
+        setLokasi(data.lokasi_kegiatan)
+        setTahun(data.tahun)
+
+        const tglBerangkat = moment(data.tanggal_mulai);
+        const tglKembali = moment(data.tanggal_selesai);
+        const tglspt = moment(data.tanggal_spt);
+        setTanggalBerangkat(tglBerangkat.tz("Asia/Jakarta").format("YYYY-MM-DD"))
+        setTanggalKembali(tglKembali.tz("Asia/Jakarta").format("YYYY-MM-DD"))
+        setTanggalSpt(tglspt.tz("Asia/Jakarta").format("YYYY-MM-DD"))
+        setPenerimaPerintah(data.pegawai_yang_diperintahkan)
+        // console.log("data.pegawai_yang_diperintahkan", data.pegawai_yang_diperintahkan)
+        if (data.pejabat_yang_memerintahkan.an.length == 3) {
+            const ttd = {
+                an: [{
+                    name: "a.n. SEKRETARIS DAERAH"
+                }, {
+                    name: "Asisten Administrasi Umum"
+                }, {
+                    name: "U.b"
+                }],
+                name: "TRIGUNO S. PRIO, S.STP, MM",
+                jabatan: "Kepala Bagian Protokol dan Komunikasi Pimpinan",
+                pangkat: "Pembina",
+                nip: "19810815 199912 1 002",
+                golongan: "",
+            }
+            setPemberiPerintah(ttd)
+        } else {
+            const pp = {
+                an: [{
+                    name: "a.n. SEKRETARIS DAERAH"
+                }],
+                name: "NINIK SUSMIATI, SKM, MKes",
+                jabatan: "Asisten Administrasi Umum",
+                pangkat: "Pembina Utama Muda",
+                nip: "19680325 199302 2 001",
+                golongan: "",
+            }
+            setPemberiPerintah(pp)
+
+        }
+    }
+
+    const removeTags = (indextoRemove) => {
+        setPenerimaPerintah(penerimaPerintah.filter((_, index) => index !== indextoRemove))
+        // console.log(penerimaPerintah)
+    }
+
+    const pemberiPerintahHandler = (val) => {
+        if (val == "kadis") {
+            const pp = {
+                an: [{
+                    name: "a.n. SEKRETARIS DAERAH"
+                }, {
+                    name: "Asisten Administrasi Umum"
+                }, {
+                    name: "U.b"
+                }],
+                name: "TRIGUNO S. PRIO, S.STP, MM",
+                jabatan: "Kepala Bagian Protokol dan Komunikasi Pimpinan",
+                pangkat: "Pembina",
+                nip: "19810815 199912 1 002",
+                golongan: "",
+            }
+            setPemberiPerintah(pp)
+            // console.log(pemberiPerintah)
+
+        } else if (val == "assisten") {
+            const pp = {
+                an: [{
+                    name: "a.n. SEKRETARIS DAERAH"
+                }],
+                name: "NINIK SUSMIATI, SKM, MKes",
+                jabatan: "Asisten Administrasi Umum",
+                pangkat: "Pembina Utama Muda",
+                nip: "19680325 199302 2 001",
+                golongan: "",
+            }
+            setPemberiPerintah(pp)
+            // console.log(pemberiPerintah)
+        }
+    }
 
     const loadPegawai = () => {
         Axios.get(urlPegawai)
@@ -87,7 +156,12 @@ const ControllerCreateSpt = () => {
             .catch((err) => catchErr(err));
     };
 
-
+    const loadData = async () => {
+        await Axios.get(urlSPT).then((v) => {
+            setDataSPT(v.data.data)
+            // console.log("data", v.data.data)
+        }).catch((err) => catchErr(err))
+    }
 
     const sugesstPejabatHandler = (data) => {
         setTextPemberiPerintah(`${data.name} - ${data.jabatan}`);
@@ -150,56 +224,6 @@ const ControllerCreateSpt = () => {
     };
 
 
-    const loadDataKecamatan = () => {
-        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
-            setKecamatan(val)
-        }).catch(err => { catchErr(err) })
-    }
-
-    const setFormData = (values) => {
-        setPerihal(values.perihal)
-        setLokasi(values.lokasi)
-        setAlamat(values.alamat)
-        setTahun(values.tahun)
-        setNomorSpt(values.nomor_sppd)
-        const tglBerangkat = moment(values.tanggal_berangkat);
-        const tglKembali = moment(values.tanggal_kembali);
-        setBerangkat(tglBerangkat.tz("Asia/Jakarta").format("DD MMM YYYY"));
-        setKembali(tglKembali.tz("Asia/Jakarta").format("DD MMM YYYY"));
-        setJenisPerjalanan(values.jenis_perjadin)
-        setTanggalBerangkat(tglBerangkat.tz("Asia/Jakarta").format("YYYY-MM-DD"))
-        setTanggalKembali(tglKembali.tz("Asia/Jakarta").format("YYYY-MM-DD"))
-
-        setPerihalPerjadin(values.perihal)
-        setLokasiPerjadin(values.lokasi)
-        setAlamatPerjadin(values.alamat)
-        setTahunPerjadin(values.tahun)
-        setJenisPerjalananPerjadin(values.jenis_perjadin)
-
-    }
-
-    const loadDataPerjadin = () => {
-        Axios.get(urlPerjadin).then((value) => {
-            setFormData(value.data.data)
-            const berangkat = moment(value.tanggal_berangkat);
-            const kembali = moment(value.tanggal_kembali);
-            const lama = kembali.diff(berangkat);
-            const duration = moment.duration(lama);
-            const lamaPerjalanan = duration.days() + 1;
-            setLamaPerjalanan(lamaPerjalanan)
-            setReady(true);
-
-        }).catch(err => catchErr(err))
-    }
-
-    React.useEffect(() => {
-        // cekSPPD()
-        loadDataKecamatan();
-        loadDataPerjadin()
-        loadPegawai();
-
-    }, []);
-
     const catchErr = (err) => {
         err.response.data
             ? setErrorMessage(err.response.data.message)
@@ -211,52 +235,21 @@ const ControllerCreateSpt = () => {
         setShow(true);
     };
 
-    const pemberiPerintahHandler = (val) => {
-        if (val == "kadis") {
-            const pp = {
-                an: [{
-                    name: "a.n. SEKRETARIS DAERAH"
-                }, {
-                    name: "Asisten Administrasi Umum"
-                }, {
-                    name: "U.b"
-                }],
-                name: "TRIGUNO S. PRIO, S.STP, MM",
-                jabatan: "Kepala Bagian Protokol dan Komunikasi Pimpinan",
-                pangkat: "Pembina",
-                nip: "19810815 199912 1 002",
-                golongan: "",
-            }
-            setPemberiPerintah(pp)
-            // console.log(pemberiPerintah)
 
-        } else if (val == "assisten") {
-            const pp = {
-                an: [{
-                    name: "a.n. SEKRETARIS DAERAH"
-                }],
-                name: "NINIK SUSMIATI, SKM, MKes",
-                jabatan: "Asisten Administrasi Umum",
-                pangkat: "Pembina Utama Muda",
-                nip: "19680325 199302 2 001",
-                golongan: "",
-            }
-            setPemberiPerintah(pp)
-            // console.log(pemberiPerintah)
-        }
-    }
-
-    const removeTags = (indextoRemove) => {
-        setPenerimaPerintah(penerimaPerintah.filter((_, index) => index !== indextoRemove))
-        // console.log(penerimaPerintah)
+    const loadDataKecamatan = () => {
+        Axios.get('https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3522.json').then((val) => {
+            setKecamatan(val)
+        }).catch(err => { catchErr(err) })
     }
 
     const submitForm = (e) => {
+
         e.preventDefault();
         const tinym = editorRef.current.getContent();
         const dasarSpt = tinym
         // console.log("tinymce: ", tinym)
         const body = {
+            _id: idSPT,
             nomor_spt: nomorSpt,
             dasar_spt: dasarSpt,
             perihal: perihal,
@@ -268,38 +261,30 @@ const ControllerCreateSpt = () => {
             pegawai_yang_diperintahkan: penerimaPerintah,
             tahun: tahun
         }
-        const bodyPerjadin = {
-            _id: idPerjadin,
-            nomor_sppd: nomorSpt,
-            perihal: perihal,
-            lokasi: lokasi,
-            alamat: alamatPerjadin,
-            tanggal_berangkat: tanggalBerangkat,
-            tanggal_kembali: tanggalKembali,
-            tahun: tahunPerjadin,
-            jenis_perjadin: jenisPerjalananPerjadin
-        }
-        // console.log("body", body)
-        // console.log(pemberiPerintah)
-
-
+        console.log(body)
         Axios.post(urlpdf, body)
             .then(
-                Axios.post(urlCreate, body)
-                    .then((v) => {
-                        Axios.patch(urledit, bodyPerjadin).then(v => {
-                            history("/spt");
-                        }).catch(err => catchErr(err))
+                Axios.patch(urlUpdate, body)
+                    .then(v => {
+                        history('/spt');
                     })
                     .catch((err) => catchErr(err))
             )
             .catch((err) => catchErr(err));
     }
 
+    React.useEffect(() => {
+        // cekspt()
+        loadData();
+        loadDataKecamatan();
+        // loadDataPerjadin()
+        loadPegawai();
+    }, []);
 
     return (
         <div>
-            <CreateSpt
+
+            <EditSpt
                 show={show}
                 errorMessage={errorMessage}
                 ready={ready}
@@ -315,9 +300,13 @@ const ControllerCreateSpt = () => {
                 jenisPerjalanan={jenisPerjalanan}
                 tanggalSpt={tanggalSpt}
                 editorRef={editorRef}
+                dasarSpt={dasarSpt}
+                history={history}
 
                 textPemberiPerintah={textPemberiPerintah}
                 setTextPemberiPerintah={setTextPemberiPerintah}
+                tanggalBerangkat={tanggalBerangkat}
+                tanggalKembali={tanggalKembali}
                 pemberiPerintah={pemberiPerintah}
                 setPemberiPerintah={setPemberiPerintah}
                 penerimaPerintah={penerimaPerintah}
@@ -344,4 +333,4 @@ const ControllerCreateSpt = () => {
     )
 }
 
-export default ControllerCreateSpt
+export default ControllerEditSpt

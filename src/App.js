@@ -50,6 +50,7 @@ import ControllerImportPegawai from "./controller/pegawai/import";
 import ControllerCreateSppd from "./controller/sppd/create";
 import ControllerEditSppd from "./controller/sppd/edit";
 import ControllerCreateSpt from "./controller/spt/create";
+import ControllerEditSpt from "./controller/spt/edit";
 // import Dbcon from './utilities/db';
 // import Porto from './model/porto';
 
@@ -80,7 +81,7 @@ function App() {
               <Route path="/spt" exact element={<Spt />} />
               <Route path="/spt/create/:idPerjadin" exact element={<ControllerCreateSpt />} />
               <Route path="/spt/:idSpt" exact element={<DetailSpt />} />
-              <Route path="/spt/edit/:idSpt" exact element={<EditSpt />} />
+              <Route path="/spt/edit/:idSpt" exact element={<ControllerEditSpt />} />
               <Route path="/sppd" exact element={<Sppd />} />
               <Route path="/sppd/create/:idPerjadin" exact element={<ControllerCreateSppd />} />
               <Route path="/sppd/:idSppd" exact element={<DetailSppd />} />

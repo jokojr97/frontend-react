@@ -7,6 +7,7 @@ import CreateSppd from "../../page/admin/sppd/create";
 const ControllerCreateSppd = () => {
 
   const d = new Date();
+  const now = moment(d).tz("Asia/Jakarta").format("YYYY-MM-DD");
   let year = d.getFullYear();
   const pathname = useLocation().pathname;
   const idPerjadin = pathname.replace("/sppd/create/", "");
@@ -29,17 +30,17 @@ const ControllerCreateSppd = () => {
   const [textPenerimaPerintah, setTextPenerimaPerintah] = useState("");
   const [perihal, setPerihal] = useState("");
   const [angkutan, setAngkutan] = useState("");
-  const [tempatBernagkat, setTempatBerangkat] = useState("");
+  const [tempatBernagkat, setTempatBerangkat] = useState("Bojonegoro");
   const [tempatTujuan, setTempatTujuan] = useState("");
   const [lamaPerjalanan, setLamaPerjalanan] = useState("");
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
   const [tanggalKembali, setTanggalKembali] = useState("");
-  const [instansi, setInstansi] = useState("");
+  const [instansi, setInstansi] = useState("Bagian Protokol dan Komunikasi Pimpinan");
   const [keteranganLain, setKeteranganLain] = useState("");
-  const [dikeluarkanDi, setDikeluarkanDi] = useState("");
+  const [dikeluarkanDi, setDikeluarkanDi] = useState("Bojonegoro");
   const [kodeRekening, setKodeRekening] = useState("");
-  const [tanggalSppd, setTanggalSppd] = useState("");
-  const [tahun, setTahun] = useState("");
+  const [tanggalSppd, setTanggalSppd] = useState(now);
+  const [tahun, setTahun] = useState(year);
   const [dataPegawai, setDataPegawai] = useState([]);
   const [sugesstionPejabat, setSugesstionPejabat] = useState([]);
   const [sugesstionPegawai, setSugesstionPegawai] = useState([]);
@@ -123,6 +124,7 @@ const ControllerCreateSppd = () => {
   };
 
   const setFormData = (values) => {
+    setNomorSppd(values.nomor_sppd)
     setPerihalPerjadin(values.perihal)
     setLokasiPerjadin(values.lokasi)
     setAlamatPerjadin(values.alamat)
@@ -281,6 +283,43 @@ const ControllerCreateSppd = () => {
     setSugesstionPejabat(matches);
   };
 
+
+  const pemberiPerintahHandler = (val) => {
+    if (val == "kadis") {
+      const pp = {
+        an: [{
+          name: "a.n. SEKRETARIS DAERAH"
+        }, {
+          name: "Asisten Administrasi Umum"
+        }, {
+          name: "U.b"
+        }],
+        name: "TRIGUNO S. PRIO, S.STP, MM",
+        jabatan: "Kepala Bagian Protokol dan Komunikasi Pimpinan",
+        pangkat: "Pembina",
+        nip: "19810815 199912 1 002",
+        golongan: "",
+      }
+      setPemberiPerintah(pp)
+      // console.log(pemberiPerintah)
+
+    } else if (val == "assisten") {
+      const pp = {
+        an: [{
+          name: "a.n. SEKRETARIS DAERAH"
+        }],
+        name: "NINIK SUSMIATI, SKM, MKes",
+        jabatan: "Asisten Administrasi Umum",
+        pangkat: "Pembina Utama Muda",
+        nip: "19680325 199302 2 001",
+        golongan: "",
+      }
+      setPemberiPerintah(pp)
+      // console.log(pemberiPerintah)
+    }
+  }
+
+
   React.useEffect(() => {
     // cekSPPD()
     loadData();
@@ -357,6 +396,7 @@ const ControllerCreateSppd = () => {
         errorKodeRekening={errorKodeRekening}
         errorTanggalSppd={errorTanggalSppd}
         errorTahun={errorTahun}
+        pemberiPerintahHandler={pemberiPerintahHandler}
       />
     </div>
   );
